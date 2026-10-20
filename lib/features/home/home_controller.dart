@@ -58,8 +58,9 @@ class HomeController extends ChangeNotifier {
       if (from == to) {
         _issue = SearchIssue.sameStop;
       } else {
-        // Like the web app: only the first route in routes.json order.
-        _results = _fares.findFares(from, to).take(1).toList();
+        // Every route that serves both stops, in routes.json order. The web
+        // app showed only the first, hiding routes with a lower fare.
+        _results = _fares.findFares(from, to);
         if (_results.isEmpty) _issue = SearchIssue.noCommonRoute;
       }
     }
