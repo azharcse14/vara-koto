@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../app_services.dart';
-import '../../core/bangla_text.dart';
+import '../../core/app_settings.dart';
+import '../../core/l10n.dart';
 import '../../core/theme.dart';
 import '../../data/fare_repository.dart';
 import '../../data/models/fare_result.dart';
@@ -11,15 +12,17 @@ import '../../widgets/common.dart';
 import '../about/about_screen.dart';
 import '../feedback/feedback_screen.dart';
 import '../route_detail/route_detail_screen.dart';
+import '../settings/settings_sheet.dart';
 import '../stop_picker/stop_picker_screen.dart';
 import 'home_controller.dart';
 import 'widgets/result_card.dart';
 import 'widgets/search_card.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key, required this.services});
+  const HomeScreen({super.key, required this.services, required this.settings});
 
   final AppServices services;
+  final AppSettings settings;
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -47,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
       MaterialPageRoute<StopEntry>(
         builder: (_) => StopPickerScreen(
           fares: _fares,
-          label: isFrom ? 'যাত্রা শুরু' : 'গন্তব্য',
+          label: isFrom ? context.l10n.fromLabel : context.l10n.toLabel,
         ),
       ),
     );
@@ -87,6 +90,8 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  void _openSettings() => showSettingsSheet(context, widget.settings);
+
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
@@ -123,13 +128,24 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildContent() {
     final c = _controller;
-    final message = c.message;
+    final l10n = context.l10n;
+    final message = switch (c.issue) {
+      null => null,
+      SearchIssue.sameStop => l10n.sameStop,
+      SearchIssue.noCommonRoute => l10n.noCommonRoute(
+          context.name(c.from!.nameBn, c.from!.nameEn),
+          context.name(c.to!.nameBn, c.to!.nameEn)),
+    };
     final bottomInset = MediaQuery.of(context).padding.bottom;
 
     return CustomScrollView(
       slivers: [
         SliverToBoxAdapter(
-          child: _Header(onFeedback: _openFeedback, onAbout: _openAbout),
+          child: _Header(
+            onFeedback: _openFeedback,
+            onAbout: _openAbout,
+            onSettings: _openSettings,
+          ),
         ),
         SliverPadding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -153,9 +169,7 @@ class _HomeScreenState extends State<HomeScreen> {
             padding: const EdgeInsets.fromLTRB(16, 24, 16, 0),
             sliver: SliverToBoxAdapter(
               child: _IdleHint(
-                hint: c.from == null
-                    ? 'কোথা থেকে উঠবেন আর কোথায় নামবেন, বেছে নিলেই সরকারি ভাড়া দেখাবে।'
-                    : 'এবার কোথায় নামবেন, বেছে নিন।',
+                hint: c.from == null ? l10n.idleHintStart : l10n.idleHintTo,
                 routeCount: _fares.routeCount,
                 stopCount: _fares.stops.length,
                 minFare: _fares.minFare,
@@ -170,13 +184,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '${toBnDigits(c.results.length)}টি রুটে সরাসরি যাওয়া যায়',
+                    l10n.directRoutes(
+                        c.results.length, context.digits(c.results.length)),
                     style: AppText.bodyStrong,
                   ),
-                  const Text(
-                    'কম ভাড়ার রুট আগে। স্টপওয়ারি ভাড়া দেখতে রুটে ট্যাপ করুন।',
-                    style: AppText.caption,
-                  ),
+                  Text(l10n.resultsHint, style: AppText.caption),
                 ],
               ),
             ),
@@ -202,13 +214,19 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 class _Header extends StatelessWidget {
-  const _Header({required this.onFeedback, required this.onAbout});
+  const _Header({
+    required this.onFeedback,
+    required this.onAbout,
+    required this.onSettings,
+  });
 
   final VoidCallback onFeedback;
   final VoidCallback onAbout;
+  final VoidCallback onSettings;
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 16, 8, 20),
       child: Column(
@@ -229,34 +247,45 @@ class _Header extends StatelessWidget {
                 child: const Text('🚌', style: TextStyle(fontSize: 22)),
               ),
               const SizedBox(width: 12),
-              const Expanded(
+              Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('লোকাল বাস ভাড়া', style: AppText.display),
-                    Text('Dhaka Local Bus Fare Finder', style: AppText.label),
+                    FittedBox(
+                      fit: BoxFit.scaleDown,
+                      alignment: AlignmentDirectional.centerStart,
+                      child: Text(l10n.appTitle,
+                          maxLines: 1, style: AppText.display),
+                    ),
+                    Text(l10n.appSubtitle, style: AppText.label),
                   ],
                 ),
               ),
               IconButton(
-                tooltip: 'মতামত / Feedback',
+                tooltip: l10n.feedback,
+                visualDensity: VisualDensity.compact,
                 onPressed: onFeedback,
                 icon: const Icon(Icons.rate_review_outlined,
                     color: AppColors.textSecondary),
               ),
               IconButton(
-                tooltip: 'তথ্য / About',
+                tooltip: l10n.about,
+                visualDensity: VisualDensity.compact,
                 onPressed: onAbout,
                 icon: const Icon(Icons.info_outline,
+                    color: AppColors.textSecondary),
+              ),
+              IconButton(
+                tooltip: l10n.settings,
+                visualDensity: VisualDensity.compact,
+                onPressed: onSettings,
+                icon: const Icon(Icons.settings_outlined,
                     color: AppColors.textSecondary),
               ),
             ],
           ),
           const SizedBox(height: 10),
-          const Text(
-            'সরকারি ভাড়া চার্ট অনুযায়ী, ডিজেল চালিত বাস',
-            style: AppText.caption,
-          ),
+          Text(l10n.tagline, style: AppText.caption),
         ],
       ),
     );
@@ -278,6 +307,7 @@ class _IdleHint extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -291,11 +321,17 @@ class _IdleHint extends StatelessWidget {
           child: IntrinsicHeight(
             child: Row(
               children: [
-                _Stat(value: '${toBnDigits(routeCount)}টি', label: 'রুট'),
+                _Stat(
+                  value: l10n.countValue(context.digits(routeCount)),
+                  label: l10n.statRoutes,
+                ),
                 const VerticalDivider(width: 1),
-                _Stat(value: '${toBnDigits(stopCount)}টি', label: 'স্টপ'),
+                _Stat(
+                  value: l10n.countValue(context.digits(stopCount)),
+                  label: l10n.statStops,
+                ),
                 const VerticalDivider(width: 1),
-                _Stat(value: taka(minFare), label: 'সর্বনিম্ন ভাড়া'),
+                _Stat(value: context.taka(minFare), label: l10n.statMinFare),
               ],
             ),
           ),
@@ -354,28 +390,26 @@ class _LoadError extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(24),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text(
-              'ভাড়ার তথ্য লোড করা যায়নি।',
+            Text(
+              l10n.loadError,
               style: AppText.title,
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 6),
-            const Text(
-              'অ্যাপটি বন্ধ করে আবার খুলুন, অথবা নিচের বাটনে চাপ দিন।',
+            Text(
+              l10n.loadErrorHint,
               style: AppText.label,
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 20),
-            FilledButton(
-              onPressed: onRetry,
-              child: const Text('আবার চেষ্টা করুন'),
-            ),
+            FilledButton(onPressed: onRetry, child: Text(l10n.tryAgain)),
           ],
         ),
       ),

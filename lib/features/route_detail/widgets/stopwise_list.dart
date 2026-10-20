@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/bangla_text.dart';
+import '../../../core/l10n.dart';
 import '../../../core/theme.dart';
 import '../../../data/models/fare_result.dart';
 import '../../../widgets/common.dart';
@@ -66,6 +66,7 @@ class _StopRow extends StatelessWidget {
             ? AppColors.red
             : AppColors.textMuted;
     final endpoint = isFirst || isLast;
+    final l10n = context.l10n;
 
     return SizedBox(
       height: _rowHeight,
@@ -111,20 +112,22 @@ class _StopRow extends StatelessWidget {
                 Text.rich(
                   TextSpan(children: [
                     TextSpan(
-                      text: nameBn,
+                      text: context.name(nameBn, nameEn),
                       style: endpoint
                           ? AppText.bodyStrong
                           : AppText.body.copyWith(fontWeight: FontWeight.w500),
                     ),
-                    TextSpan(text: '  $nameEn', style: AppText.caption),
+                    TextSpan(
+                        text: '  ${context.altName(nameBn, nameEn)}',
+                        style: AppText.caption),
                   ]),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
                 Text(
                   segmentFare == null
-                      ? 'এখান থেকে উঠবেন'
-                      : 'আগের স্টপ থেকে ${taka(segmentFare!)}',
+                      ? l10n.getOnHere
+                      : l10n.fromPreviousStop(context.taka(segmentFare!)),
                   style: AppText.caption,
                 ),
               ],
@@ -135,14 +138,14 @@ class _StopRow extends StatelessWidget {
             child: fareFromStart == null
                 ? const SizedBox.shrink()
                 : Text(
-                    taka(fareFromStart!),
+                    context.taka(fareFromStart!),
                     style: TextStyle(
                       fontSize: isLast ? 20 : 16,
                       fontWeight: isLast ? FontWeight.w700 : FontWeight.w600,
                       color: isLast ? AppColors.amber : AppColors.text,
                     ),
                     semanticsLabel:
-                        'এখানে নামলে ভাড়া ${toBnDigits(fareFromStart!)} টাকা',
+                        l10n.fareToHere(context.digits(fareFromStart!)),
                   ),
           ),
         ],

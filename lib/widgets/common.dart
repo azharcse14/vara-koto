@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../core/l10n.dart';
 import '../core/theme.dart';
 
 /// Translucent card with a hairline border. Tappable when [onTap] is set.
@@ -87,19 +88,20 @@ class SectionHeader extends StatelessWidget {
   }
 }
 
-/// Bangla name with the English name beside it in a smaller, quieter style.
+/// The name in the app's language, with the other language's name below it
+/// in a smaller, quieter style.
 class StopName extends StatelessWidget {
   const StopName({
     super.key,
     required this.nameBn,
     required this.nameEn,
-    this.bnStyle = AppText.bodyStrong,
+    this.style = AppText.bodyStrong,
     this.align = CrossAxisAlignment.start,
   });
 
   final String nameBn;
   final String nameEn;
-  final TextStyle bnStyle;
+  final TextStyle style;
   final CrossAxisAlignment align;
 
   @override
@@ -109,8 +111,9 @@ class StopName extends StatelessWidget {
     return Column(
       crossAxisAlignment: align,
       children: [
-        Text(nameBn, style: bnStyle, textAlign: textAlign),
-        Text(nameEn, style: AppText.label, textAlign: textAlign),
+        Text(context.name(nameBn, nameEn), style: style, textAlign: textAlign),
+        Text(context.altName(nameBn, nameEn),
+            style: AppText.label, textAlign: textAlign),
       ],
     );
   }

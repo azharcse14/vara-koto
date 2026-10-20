@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/bangla_text.dart';
+import '../../../core/l10n.dart';
 import '../../../core/theme.dart';
 import '../../../data/models/fare_result.dart';
 import '../../../widgets/common.dart';
@@ -25,6 +25,7 @@ class ResultCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final route = result.route;
+    final l10n = context.l10n;
     final renamed =
         result.from.nameEn != chosenFrom || result.to.nameEn != chosenTo;
     return AppCard(
@@ -38,13 +39,13 @@ class ResultCard extends StatelessWidget {
                 RouteBadge(route.routeNo),
                 const SizedBox(height: 8),
                 Text(
-                  route.nameBn,
+                  context.name(route.nameBn, route.nameEn),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: AppText.body.copyWith(fontWeight: FontWeight.w600),
                 ),
                 Text(
-                  route.nameEn,
+                  context.altName(route.nameBn, route.nameEn),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: AppText.caption,
@@ -52,11 +53,15 @@ class ResultCard extends StatelessWidget {
                 const SizedBox(height: 6),
                 if (renamed)
                   Text(
-                    'এই রুটে: ${result.from.nameBn} থেকে ${result.to.nameBn}',
+                    l10n.onThisRoute(
+                      context.name(result.from.nameBn, result.from.nameEn),
+                      context.name(result.to.nameBn, result.to.nameEn),
+                    ),
                     style: AppText.label.copyWith(color: AppColors.text),
                   ),
                 Text(
-                  '${toBnDigits(result.path.length)}টি স্টপ',
+                  l10n.stopCount(
+                      result.path.length, context.digits(result.path.length)),
                   style: AppText.label,
                 ),
               ],
@@ -66,9 +71,9 @@ class ResultCard extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              Text(taka(result.fare), style: AppText.fare),
+              Text(context.taka(result.fare), style: AppText.fare),
               const SizedBox(height: 4),
-              const Text('ভাড়া', style: AppText.caption),
+              Text(l10n.fare, style: AppText.caption),
             ],
           ),
           const SizedBox(width: 4),

@@ -1,0 +1,119 @@
+{
+  "@@locale": "en",
+
+  "appTitle": "Local Bus Fare",
+  "appSubtitle": "Dhaka local bus fare finder",
+  "tagline": "Official fare chart, diesel buses",
+
+  "fromLabel": "From",
+  "toLabel": "To",
+  "fromPlaceholder": "Where are you getting on?",
+  "toPlaceholder": "Where are you getting off?",
+  "swap": "Swap",
+
+  "feedback": "Feedback",
+  "about": "About",
+  "settings": "Settings",
+  "language": "Language",
+  "systemDefault": "System",
+
+  "idleHintStart": "Pick where you get on and where you get off to see the official fare.",
+  "idleHintTo": "Now pick where you get off.",
+  "countValue": "{n}",
+  "@countValue": {
+    "description": "A count on the home screen stats, e.g. 120 routes.",
+    "placeholders": {"n": {"type": "String"}}
+  },
+  "statRoutes": "Routes",
+  "statStops": "Stops",
+  "statMinFare": "Minimum fare",
+
+  "directRoutes": "{count, plural, =1{{n} route goes there directly} other{{n} routes go there directly}}",
+  "@directRoutes": {
+    "description": "count picks the plural form; n is the same number, written in the app's digits.",
+    "placeholders": {"count": {"type": "int"}, "n": {"type": "String"}}
+  },
+  "resultsHint": "Cheapest routes first. Tap a route for stop-by-stop fares.",
+  "sameStop": "Start and destination can't be the same.",
+  "noCommonRoute": "No single route goes from “{from}” to “{to}”. Try a nearby stop.",
+  "@noCommonRoute": {
+    "placeholders": {"from": {"type": "String"}, "to": {"type": "String"}}
+  },
+
+  "loadError": "Couldn't load fare data.",
+  "loadErrorHint": "Close and reopen the app, or tap the button below.",
+  "tryAgain": "Try again",
+
+  "onThisRoute": "On this route: {from} to {to}",
+  "@onThisRoute": {
+    "placeholders": {"from": {"type": "String"}, "to": {"type": "String"}}
+  },
+  "stopCount": "{count, plural, =1{{n} stop} other{{n} stops}}",
+  "@stopCount": {
+    "placeholders": {"count": {"type": "int"}, "n": {"type": "String"}}
+  },
+  "routeCount": "{count, plural, =1{{n} route} other{{n} routes}}",
+  "@routeCount": {
+    "placeholders": {"count": {"type": "int"}, "n": {"type": "String"}}
+  },
+  "segmentCount": "{count, plural, =1{{n} segment} other{{n} segments}}",
+  "@segmentCount": {
+    "placeholders": {"count": {"type": "int"}, "n": {"type": "String"}}
+  },
+  "fare": "Fare",
+
+  "searchHint": "{label}: stop name or route number",
+  "@searchHint": {
+    "placeholders": {"label": {"type": "String"}}
+  },
+  "clear": "Clear",
+  "noStopFound": "No stop found for “{query}”",
+  "@noStopFound": {
+    "placeholders": {"query": {"type": "String"}}
+  },
+  "noStopFoundHint": "Try a different spelling, or search in Bangla or English. You can also search by route number, like 101.",
+
+  "stopwiseTitle": "Stop-by-stop fare",
+  "stopwiseSubtitle": "Official fare to the stop where you get off",
+  "matrixTitle": "Full fare matrix",
+  "matrixSubtitle": "Fare between any two stops on this route. Scroll sideways to see more.",
+  "matrixCorner": "From ↓  To →",
+  "totalFare": "Total fare",
+  "routeLength": "Full route {km} km",
+  "@routeLength": {
+    "placeholders": {"km": {"type": "String"}}
+  },
+  "getOnHere": "Get on here",
+  "fromPreviousStop": "{fare} from the previous stop",
+  "@fromPreviousStop": {
+    "placeholders": {"fare": {"type": "String"}}
+  },
+  "fareToHere": "Fare to get off here: {n} taka",
+  "@fareToHere": {
+    "placeholders": {"n": {"type": "String"}}
+  },
+
+  "feedbackTitle": "Send feedback",
+  "feedbackIntro": "Tell us if a fare looks wrong, a stop is missing, or you'd like something new.",
+  "feedbackName": "Your name (optional)",
+  "feedbackMessage": "Write your feedback or suggestion",
+  "sending": "Sending...",
+  "send": "Send",
+  "feedbackFailed": "Couldn't send feedback. Check your internet connection and try again.",
+  "feedbackLocalNote": "Feedback is saved on your phone for now. It will be sent automatically once the app is connected to a server.",
+  "feedbackSent": "Feedback sent. Thank you!",
+  "feedbackSaved": "Feedback saved on your phone. Thank you!",
+  "feedbackSentHint": "Your feedback has reached us.",
+  "feedbackSavedHint": "It will be sent automatically once the server can be reached.",
+  "writeAnother": "Write another",
+
+  "fareSource": "Fare source",
+  "fareSourceBody": "BRTA fare chart for diesel buses. Minimum fare 10.00 taka.",
+  "fareNotice": "22 September 2026\nNotification no. 35.00.0000.020.26.005.16-540",
+  "dataVersion": "Data version: {version}",
+  "@dataVersion": {
+    "placeholders": {"version": {"type": "String"}}
+  },
+  "dataLocal": "All data is inside the app, so it works without internet.",
+  "dataRemote": "Data updates from the server. Without internet, the last saved data is shown."
+}

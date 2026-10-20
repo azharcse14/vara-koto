@@ -149,12 +149,14 @@ void main() {
     });
 
     test('km formatting', () {
-      expect(formatKmBn(28.8), '২৮.৮');
-      expect(formatKmBn(15), '১৫');
+      expect(formatKm(28.8), '২৮.৮');
+      expect(formatKm(15), '১৫');
+      expect(formatKm(28.8, bn: false), '28.8');
     });
 
-    test('taka uses Bangla digits', () {
+    test('taka uses the app language digits', () {
       expect(taka(10), '৳১০');
+      expect(taka(10, bn: false), '৳10');
     });
   });
 }

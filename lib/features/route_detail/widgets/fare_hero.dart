@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/bangla_text.dart';
+import '../../../core/l10n.dart';
 import '../../../core/theme.dart';
 import '../../../data/models/fare_result.dart';
 import '../../../widgets/common.dart';
@@ -12,6 +12,9 @@ class FareHero extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final stops = result.path.length;
+    final segments = result.segments.length;
     return AppCard(
       color: AppColors.amberFaint,
       borderColor: AppColors.amberLine,
@@ -42,17 +45,17 @@ class FareHero extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 20),
-          const Text('মোট ভাড়া / Total fare', style: AppText.label),
+          Text(l10n.totalFare, style: AppText.label),
           const SizedBox(height: 6),
-          Text(taka(result.fare), style: AppText.fareHero),
+          Text(context.taka(result.fare), style: AppText.fareHero),
           const SizedBox(height: 16),
           Wrap(
             spacing: 8,
             runSpacing: 8,
             children: [
-              _Tag('${toBnDigits(result.path.length)}টি স্টপ'),
-              _Tag('${toBnDigits(result.segments.length)}টি সেগমেন্ট'),
-              _Tag('পুরো রুট ${formatKmBn(result.route.totalKm)} কিমি'),
+              _Tag(l10n.stopCount(stops, context.digits(stops))),
+              _Tag(l10n.segmentCount(segments, context.digits(segments))),
+              _Tag(l10n.routeLength(context.km(result.route.totalKm))),
             ],
           ),
         ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../core/l10n.dart';
 import '../../core/theme.dart';
 import '../../data/models/fare_result.dart';
 import '../../widgets/common.dart';
@@ -16,6 +17,7 @@ class RouteDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final route = result.route;
     final bottomInset = MediaQuery.of(context).padding.bottom;
+    final l10n = context.l10n;
 
     return Scaffold(
       appBar: AppBar(
@@ -26,7 +28,7 @@ class RouteDetailScreen extends StatelessWidget {
             const SizedBox(width: 10),
             Expanded(
               child: Text(
-                route.nameBn,
+                context.name(route.nameBn, route.nameEn),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: AppText.bodyStrong,
@@ -40,15 +42,15 @@ class RouteDetailScreen extends StatelessWidget {
         children: [
           FareHero(result: result),
           const SizedBox(height: 28),
-          const SectionHeader(
-            title: 'স্টপওয়ারি ভাড়া / Stop-wise fare',
-            subtitle: 'যে স্টপে নামবেন, সেখান পর্যন্ত সরকারি ভাড়া',
+          SectionHeader(
+            title: l10n.stopwiseTitle,
+            subtitle: l10n.stopwiseSubtitle,
           ),
           StopwiseList(result: result),
           const SizedBox(height: 28),
-          const SectionHeader(
-            title: 'সম্পূর্ণ ভাড়া ম্যাট্রিক্স / Full fare matrix',
-            subtitle: 'এই রুটের যেকোনো দুই স্টপের ভাড়া। ডানে-বামে সরিয়ে দেখুন।',
+          SectionHeader(
+            title: l10n.matrixTitle,
+            subtitle: l10n.matrixSubtitle,
           ),
           FareMatrixTable(
             route: route,

@@ -26,11 +26,12 @@ String normalizeRouteKey(String s) {
   return t.replaceAll(_routeSeparators, '');
 }
 
-/// 28.8 -> "২৮.৮", 15.0 -> "১৫"
-String formatKmBn(double km) {
+/// 28.8 -> "২৮.৮" (or "28.8" when [bn] is false), 15.0 -> "১৫"
+String formatKm(double km, {bool bn = true}) {
   final text =
       km == km.roundToDouble() ? km.toInt().toString() : km.toString();
-  return toBnDigits(text);
+  return bn ? toBnDigits(text) : text;
 }
 
-String taka(int amount) => '৳${toBnDigits(amount)}';
+String taka(int amount, {bool bn = true}) =>
+    '৳${bn ? toBnDigits(amount) : amount}';

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../config/app_config.dart';
+import '../../core/l10n.dart';
 import '../../core/theme.dart';
 import '../../data/feedback_repository.dart';
 import '../../widgets/common.dart';
@@ -54,25 +55,22 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
   @override
   Widget build(BuildContext context) {
     final outcome = _outcome;
+    final l10n = context.l10n;
     return Scaffold(
-      appBar: AppBar(title: const Text('মতামত জানান / Feedback')),
+      appBar: AppBar(title: Text(l10n.feedbackTitle)),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
         children: outcome != null
             ? [_Done(outcome: outcome, onWriteAnother: () => setState(() => _outcome = null))]
             : [
-                const Text(
-                  'কোনো ভাড়া ভুল দেখালে, স্টপ খুঁজে না পেলে বা নতুন কিছু চাইলে লিখে জানান।',
-                  style: AppText.label,
-                ),
+                Text(l10n.feedbackIntro, style: AppText.label),
                 const SizedBox(height: 16),
                 TextField(
                   controller: _name,
                   textInputAction: TextInputAction.next,
                   textCapitalization: TextCapitalization.words,
                   style: AppText.body,
-                  decoration:
-                      appInputDecoration('আপনার নাম (ঐচ্ছিক) / Name (optional)'),
+                  decoration: appInputDecoration(l10n.feedbackName),
                 ),
                 const SizedBox(height: 12),
                 TextField(
@@ -82,8 +80,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                   maxLength: 2000,
                   onChanged: (_) => setState(() {}),
                   style: AppText.body,
-                  decoration: appInputDecoration(
-                      'আপনার মতামত বা পরামর্শ লিখুন / Write your feedback'),
+                  decoration: appInputDecoration(l10n.feedbackMessage),
                 ),
                 const SizedBox(height: 8),
                 FilledButton(
@@ -98,23 +95,20 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                       fontWeight: FontWeight.w700,
                     ),
                   ),
-                  child: Text(_submitting ? 'পাঠানো হচ্ছে...' : 'পাঠিয়ে দিন / Send'),
+                  child: Text(_submitting ? l10n.sending : l10n.send),
                 ),
                 if (_failed)
-                  const Padding(
-                    padding: EdgeInsets.only(top: 12),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 12),
                     child: Text(
-                      'মতামত পাঠানো যায়নি। ইন্টারনেট সংযোগ দেখে আবার পাঠান।',
-                      style: TextStyle(color: AppColors.red),
+                      l10n.feedbackFailed,
+                      style: const TextStyle(color: AppColors.red),
                     ),
                   ),
                 if (widget.mode == DataMode.local)
-                  const Padding(
-                    padding: EdgeInsets.only(top: 16),
-                    child: Text(
-                      'মতামত এখন ফোনেই জমা থাকে। অ্যাপে সার্ভার যুক্ত হলে নিজে থেকেই পাঠিয়ে দেওয়া হবে।',
-                      style: AppText.caption,
-                    ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 16),
+                    child: Text(l10n.feedbackLocalNote, style: AppText.caption),
                   ),
               ],
       ),
@@ -131,6 +125,7 @@ class _Done extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final sent = outcome == FeedbackOutcome.sent;
+    final l10n = context.l10n;
     return AppCard(
       padding: const EdgeInsets.all(20),
       borderColor: const Color(0x4D22D3A5),
@@ -140,20 +135,18 @@ class _Done extends StatelessWidget {
           const Icon(Icons.check_circle_outline, color: AppColors.green, size: 32),
           const SizedBox(height: 12),
           Text(
-            sent ? 'মতামত পাঠানো হয়েছে। ধন্যবাদ!' : 'মতামত ফোনে জমা হয়েছে। ধন্যবাদ!',
+            sent ? l10n.feedbackSent : l10n.feedbackSaved,
             style: AppText.title,
           ),
           const SizedBox(height: 6),
           Text(
-            sent
-                ? 'আপনার মতামত আমাদের কাছে পৌঁছেছে।'
-                : 'সার্ভারের সাথে সংযোগ পেলেই এটি নিজে থেকে পাঠিয়ে দেওয়া হবে।',
+            sent ? l10n.feedbackSentHint : l10n.feedbackSavedHint,
             style: AppText.label,
           ),
           const SizedBox(height: 16),
           OutlinedButton(
             onPressed: onWriteAnother,
-            child: const Text('আরেকটি মতামত লিখুন'),
+            child: Text(l10n.writeAnother),
           ),
         ],
       ),

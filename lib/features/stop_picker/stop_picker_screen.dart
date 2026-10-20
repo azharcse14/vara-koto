@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../core/bangla_text.dart';
+import '../../core/l10n.dart';
 import '../../core/theme.dart';
 import '../../data/fare_repository.dart';
 import '../../data/models/stop_entry.dart';
@@ -11,7 +11,7 @@ class StopPickerScreen extends StatefulWidget {
 
   final FareRepository fares;
 
-  /// "যাত্রা শুরু" or "গন্তব্য".
+  /// "From" or "To", in the app's language.
   final String label;
 
   @override
@@ -41,6 +41,7 @@ class _StopPickerScreenState extends State<StopPickerScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Scaffold(
       appBar: AppBar(
         titleSpacing: 0,
@@ -55,7 +56,7 @@ class _StopPickerScreenState extends State<StopPickerScreen> {
           style: AppText.bodyStrong,
           cursorColor: AppColors.amber,
           decoration: InputDecoration(
-            hintText: '${widget.label}: স্টপের নাম বা রুট নম্বর',
+            hintText: l10n.searchHint(widget.label),
             hintStyle: AppText.body.copyWith(color: AppColors.textMuted),
             border: InputBorder.none,
           ),
@@ -63,7 +64,7 @@ class _StopPickerScreenState extends State<StopPickerScreen> {
         actions: [
           if (_query.text.isNotEmpty)
             IconButton(
-              tooltip: 'মুছে ফেলুন',
+              tooltip: l10n.clear,
               onPressed: _clear,
               icon: const Icon(Icons.close),
             ),
@@ -86,10 +87,13 @@ class _StopPickerScreenState extends State<StopPickerScreen> {
                   onTap: () => _choose(stop),
                   leading: const Icon(Icons.place_outlined,
                       color: AppColors.textSecondary),
-                  title: Text(stop.nameBn, style: AppText.bodyStrong),
-                  subtitle: Text(stop.nameEn, style: AppText.label),
+                  title: Text(context.name(stop.nameBn, stop.nameEn),
+                      style: AppText.bodyStrong),
+                  subtitle: Text(context.altName(stop.nameBn, stop.nameEn),
+                      style: AppText.label),
                   trailing: Text(
-                    '${toBnDigits(stop.routeCount)}টি রুট',
+                    l10n.routeCount(
+                        stop.routeCount, context.digits(stop.routeCount)),
                     style: AppText.caption,
                   ),
                 );
@@ -106,18 +110,15 @@ class _NoMatch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Padding(
       padding: const EdgeInsets.all(24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('“$query” নামে কোনো স্টপ পাওয়া যায়নি', style: AppText.bodyStrong),
+          Text(l10n.noStopFound(query), style: AppText.bodyStrong),
           const SizedBox(height: 6),
-          const Text(
-            'বানান একটু বদলে লিখুন, অথবা বাংলায় বা ইংরেজিতে চেষ্টা করুন। '
-            'রুট নম্বর দিয়েও খোঁজা যায়, যেমন ১০১।',
-            style: AppText.label,
-          ),
+          Text(l10n.noStopFoundHint, style: AppText.label),
         ],
       ),
     );

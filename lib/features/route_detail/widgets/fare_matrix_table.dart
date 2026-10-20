@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/bangla_text.dart';
+import '../../../core/l10n.dart';
 import '../../../core/theme.dart';
 import '../../../data/models/bus_route.dart';
 
@@ -45,23 +45,26 @@ class FareMatrixTable extends StatelessWidget {
             defaultVerticalAlignment: TableCellVerticalAlignment.middle,
             children: [
               TableRow(children: [
-                const SizedBox(
+                SizedBox(
                   height: _headHeight,
                   child: Align(
                     alignment: Alignment.bottomLeft,
                     child: Padding(
-                      padding: EdgeInsets.fromLTRB(8, 0, 8, 6),
-                      child: Text('থেকে ↓  পর্যন্ত →', style: AppText.caption),
+                      padding: const EdgeInsets.fromLTRB(8, 0, 8, 6),
+                      child: Text(context.l10n.matrixCorner,
+                          style: AppText.caption),
                     ),
                   ),
                 ),
                 for (var j = 0; j < stops.length; j++)
-                  _HeadCell(stops[j].nameBn, picked: _isPicked(j)),
+                  _HeadCell(context.name(stops[j].nameBn, stops[j].nameEn),
+                      picked: _isPicked(j)),
               ]),
               for (var i = 0; i < stops.length; i++)
                 TableRow(children: [
-                  _RowHead(stops[i].nameBn, picked: _isPicked(i)),
-                  for (var j = 0; j < stops.length; j++) _cell(i, j),
+                  _RowHead(context.name(stops[i].nameBn, stops[i].nameEn),
+                      picked: _isPicked(i)),
+                  for (var j = 0; j < stops.length; j++) _cell(context, i, j),
                 ]),
             ],
           ),
@@ -70,7 +73,7 @@ class FareMatrixTable extends StatelessWidget {
     );
   }
 
-  Widget _cell(int i, int j) {
+  Widget _cell(BuildContext context, int i, int j) {
     final isSelf = i == j;
     final isTarget = (i == highlightA && j == highlightB) ||
         (i == highlightB && j == highlightA);
@@ -101,7 +104,8 @@ class FareMatrixTable extends StatelessWidget {
         color: background,
         borderRadius: BorderRadius.circular(6),
       ),
-      child: Text(isSelf ? '—' : taka(route.fareBetween(i, j)), style: style),
+      child: Text(isSelf ? '—' : context.taka(route.fareBetween(i, j)),
+          style: style),
     );
   }
 }

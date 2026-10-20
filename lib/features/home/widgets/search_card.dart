@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/l10n.dart';
 import '../../../core/theme.dart';
 import '../../../data/models/stop_entry.dart';
 import '../../../widgets/common.dart';
@@ -30,6 +31,7 @@ class SearchCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const dotCenter = _fieldHeight / 2;
+    final l10n = context.l10n;
     return AppCard(
       padding: EdgeInsets.zero,
       child: Stack(
@@ -37,11 +39,10 @@ class SearchCard extends StatelessWidget {
           Column(
             children: [
               _StopField(
-                label: 'যাত্রা শুরু',
-                labelEn: 'From',
+                label: l10n.fromLabel,
                 dotColor: AppColors.green,
                 stop: from,
-                placeholder: 'কোথা থেকে উঠবেন?',
+                placeholder: l10n.fromPlaceholder,
                 onTap: onPickFrom,
               ),
               const Divider(
@@ -50,11 +51,10 @@ class SearchCard extends StatelessWidget {
                 endIndent: _rightInset,
               ),
               _StopField(
-                label: 'গন্তব্য',
-                labelEn: 'To',
+                label: l10n.toLabel,
                 dotColor: AppColors.red,
                 stop: to,
-                placeholder: 'কোথায় নামবেন?',
+                placeholder: l10n.toPlaceholder,
                 onTap: onPickTo,
               ),
             ],
@@ -86,7 +86,6 @@ class SearchCard extends StatelessWidget {
 class _StopField extends StatelessWidget {
   const _StopField({
     required this.label,
-    required this.labelEn,
     required this.dotColor,
     required this.stop,
     required this.placeholder,
@@ -94,7 +93,6 @@ class _StopField extends StatelessWidget {
   });
 
   final String label;
-  final String labelEn;
   final Color dotColor;
   final StopEntry? stop;
   final String placeholder;
@@ -126,7 +124,7 @@ class _StopField extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('$label / $labelEn', style: AppText.caption),
+                    Text(label, style: AppText.caption),
                     if (selected == null)
                       Text(
                         placeholder,
@@ -139,9 +137,11 @@ class _StopField extends StatelessWidget {
                       Text.rich(
                         TextSpan(children: [
                           TextSpan(
-                              text: selected.nameBn, style: AppText.bodyStrong),
+                              text: context.name(
+                                  selected.nameBn, selected.nameEn),
+                              style: AppText.bodyStrong),
                           TextSpan(
-                              text: '  ${selected.nameEn}',
+                              text: '  ${context.altName(selected.nameBn, selected.nameEn)}',
                               style: AppText.label),
                         ]),
                         maxLines: 1,
@@ -174,7 +174,7 @@ class _SwapButtonState extends State<_SwapButton> {
   Widget build(BuildContext context) {
     final reduceMotion = MediaQuery.of(context).disableAnimations;
     return Tooltip(
-      message: 'অদলবদল / Swap',
+      message: context.l10n.swap,
       child: Material(
         color: AppColors.surface,
         shape: const CircleBorder(side: BorderSide(color: AppColors.amberLine)),
