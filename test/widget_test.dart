@@ -30,9 +30,21 @@ void main() {
 
   group('dataset', () {
     test('loads every route and stop', () {
-      expect(data.routes.length, 135);
-      expect(data.routes.map((r) => r.id).toSet().length, 135);
-      expect(stops.length, 336);
+      expect(data.routes.length, 143);
+      expect(data.routes.map((r) => r.id).toSet().length, 143);
+      expect(stops.length, 343);
+    });
+
+    test('keeps an earlier route whose number the chart gave to another road', () {
+      // The chart's A-380 is Shialbari → Kamalapur; Khilgaon → Pallabi stays as A380_OLD.
+      final ids = findFares(data.routes, 'Mirpur-12', 'Mirpur-1').map((r) => r.route.id);
+      expect(ids, containsAll(['A330', 'A356', 'A380_OLD']));
+    });
+
+    test('one stop per place even when spelled two ways in English', () {
+      // "শাহবাগ" was both Shahbag and Shahbagh, so Khilgaon → Shahbag missed A380_OLD.
+      expect(stops.where((s) => s.nameBn == 'শাহবাগ').length, 1);
+      expect(findFares(data.routes, 'Khilgaon', 'Shahbag'), isNotEmpty);
     });
 
     test('has the date the data last changed, shown in Bangla in About', () async {

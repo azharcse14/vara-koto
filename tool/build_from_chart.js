@@ -4,7 +4,8 @@
 // Usage: node tool/build_from_chart.js   (export_data.js also runs it)
 //
 // A route whose number is in the chart takes the chart's stops and printed
-// fares (all variants with that number are replaced by the one chart route).
+// fares (all variants with that number are replaced by the one chart route),
+// unless the earlier route runs on a road the chart doesn't have (see inChart).
 // Routes the chart doesn't list keep their earlier data. New chart routes are
 // placed in route-number order.
 //
@@ -79,18 +80,71 @@ const insertNewUpTo = (num) => {
     }
   }
 };
+// An earlier route is in the chart when a chart route shares 60% of its stops,
+// or the chart route with its number has the same two ends. Otherwise the
+// chart reused its number for another road (A380 was Khilgaon → Pallabi, the
+// chart's A-380 is Shialbari → Kamalapur), so the earlier route stays too.
+const sameStop = (a, b) =>
+  a.nameEn === b.nameEn || a.aliases.includes(b.nameEn.toLowerCase()) || b.aliases.includes(a.nameEn.toLowerCase());
+const shared = (a, b) => {
+  const names = new Set(b.stops.map((s) => s.nameEn));
+  const n = new Set(a.stops.map((s) => s.nameEn).filter((s) => names.has(s))).size;
+  return n / Math.max(new Set(a.stops.map((s) => s.nameEn)).size, names.size);
+};
+const sameEnds = (a, b) => {
+  const [a0, a1, b0, b1] = [a.stops[0], a.stops.at(-1), b.stops[0], b.stops.at(-1)];
+  return (sameStop(a0, b0) && sameStop(a1, b1)) || (sameStop(a0, b1) && sameStop(a1, b0));
+};
+const inChart = (old, num) =>
+  [...fromChart.values()].some((r) => shared(old, r) >= 0.6) || sameEnds(old, fromChart.get(num));
+
+let keptOld = 0;
 for (const old of data.routes) {
   const num = routeNum(old.routeNo);
   if (num) insertNewUpTo(num);
-  if (!fromChart.has(num)) routes.push(old);
-  else if (!placed.has(num)) {
+  if (!fromChart.has(num)) {
+    routes.push(old);
+    continue;
+  }
+  if (!placed.has(num)) {
     routes.push(fromChart.get(num));
     placed.add(num);
+  }
+  // An _OLD route was judged on an earlier run, before stop names were merged.
+  if (old.id.endsWith('_OLD') || !inChart(old, num)) {
+    routes.push({ ...old, id: old.id.endsWith('_OLD') ? old.id : `${old.id}_OLD` });
+    keptOld++;
   }
 }
 insertNewUpTo(Infinity);
 
-data.routes = routes;
+// One place, one English name: stops with the same Bangla name ("শাহবাগ" as
+// Shahbag and Shahbagh) take the name most stops use, and keep the other as
+// an alias. Otherwise the app lists them as two stops and finds half the routes.
+const bnKey = (s) => s.normalize('NFD').replace(/[\s()\-.:ঃ,‌‍]/g, '');
+const counts = new Map();
+for (const r of routes) {
+  for (const s of r.stops) {
+    const k = bnKey(s.nameBn);
+    if (!counts.has(k)) counts.set(k, new Map());
+    counts.get(k).set(s.nameEn, (counts.get(k).get(s.nameEn) || 0) + 1);
+  }
+}
+const canonical = (s) => [...counts.get(bnKey(s.nameBn))].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))[0][0];
+const merged = new Map();
+for (const r of routes) {
+  for (const s of r.stops) {
+    if (!merged.has(canonical(s))) merged.set(canonical(s), new Set());
+    [s.nameEn.toLowerCase(), ...s.aliases].forEach((a) => merged.get(canonical(s)).add(a));
+  }
+}
+data.routes = routes.map((r) => ({
+  ...r,
+  stops: r.stops.map((s) => ({ ...s, nameEn: canonical(s), aliases: [...merged.get(canonical(s))] })),
+}));
 data.source = `${chart.source}. Routes not in that chart keep the earlier chart's fares.`;
 require('./write_routes')(dest, data);
-console.log(`${fromChart.size} routes from the chart, ${routes.length - fromChart.size} kept from earlier data, ${routes.length} in all.`);
+console.log(
+  `${fromChart.size} routes from the chart, ${routes.length - fromChart.size} kept from earlier data ` +
+    `(${keptOld} on a road the chart gave another route's number), ${routes.length} in all.`,
+);
