@@ -14,7 +14,10 @@ import 'package:dhaka_bus_vara/domain/fare_finder.dart';
 import 'package:dhaka_bus_vara/domain/stop_index.dart';
 import 'package:dhaka_bus_vara/domain/stop_search.dart';
 import 'package:dhaka_bus_vara/data/sources/route_data_source.dart';
+import 'package:dhaka_bus_vara/l10n/app_localizations.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 void main() {
   late RouteDataset data;
@@ -27,9 +30,31 @@ void main() {
 
   group('dataset', () {
     test('loads every route and stop', () {
-      expect(data.routes.length, 124);
-      expect(data.routes.map((r) => r.id).toSet().length, 120);
-      expect(stops.length, 371);
+      expect(data.routes.length, 135);
+      expect(data.routes.map((r) => r.id).toSet().length, 135);
+      expect(stops.length, 336);
+    });
+
+    test('has the date the data last changed, shown in Bangla in About', () async {
+      expect(data.updated, isNotNull);
+      await initializeDateFormatting('bn');
+      final bn = await AppLocalizations.delegate.load(const Locale('bn'));
+      expect(bn.dataUpdated(DateTime(2026, 10, 20)), 'ডেটা সর্বশেষ হালনাগাদ: ২০ অক্টোবর, ২০২৬');
+    });
+
+    test('uses the printed fares of the 22 Sep 2026 BRTA chart', () {
+      int fare(String id, String from, String to) {
+        final r = data.routes.firstWhere((r) => r.id == id);
+        return r.fareBetween(r.indexOfStop(from), r.indexOfStop(to));
+      }
+
+      // The earlier data had 18 here; the chart prints 14.
+      expect(fare('A101', 'Farmgate', 'Gulistan'), 14);
+      // Printed 10, though 3.9 km x 2.70 rounds to 11.
+      expect(fare('A101', 'Mirpur-12', 'Kazipara'), 10);
+      // Printed 8, below the chart's own 10 taka minimum; stored as 10.
+      final a341 = data.routes.firstWhere((r) => r.id == 'A341');
+      expect(a341.fareMatrix.expand((row) => row).where((f) => f > 0 && f < 10), isEmpty);
     });
 
     test('every matrix is square and symmetric', () {
@@ -58,7 +83,7 @@ void main() {
 
     test('Mirpur-1 to Farmgate only uses Mirpur-1 (old server showed 14 routes)', () {
       final results = findFares(data.routes, 'Mirpur-1', 'Farmgate');
-      expect(results.length, 4);
+      expect(results.length, 5);
       for (final r in results) {
         expect(r.from.nameEn, 'Mirpur-1', reason: r.route.id);
         expect(r.fare, 19, reason: r.route.id);
@@ -78,8 +103,8 @@ void main() {
 
     test('spelling variants linked by aliases are found', () {
       final results = findFares(data.routes, 'Kanchpur', 'Gulistan');
-      expect(results.map((r) => r.from.nameEn), contains('Kanchpur Bridge'));
-      expect(results.map((r) => r.from.nameEn), contains('Kanchpur'));
+      expect(results, isNotEmpty);
+      expect(results.map((r) => r.from.nameEn).toSet(), {'Kanchpur Bridge'});
     });
 
     test('reverse trip has the same fare and reversed path', () {

@@ -259,8 +259,11 @@ class AppLocalizationsEn extends AppLocalizations {
       '22 September 2026\nNotification no. 35.00.0000.020.26.005.16-540';
 
   @override
-  String dataVersion(String version) {
-    return 'Data version: $version';
+  String dataUpdated(DateTime date) {
+    final intl.DateFormat dateDateFormat = intl.DateFormat.yMMMMd(localeName);
+    final String dateString = dateDateFormat.format(date);
+
+    return 'Data last updated: $dateString';
   }
 
   @override

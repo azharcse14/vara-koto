@@ -255,8 +255,11 @@ class AppLocalizationsBn extends AppLocalizations {
       '০৭ আশ্বিন ১৪৩৩ বঙ্গাব্দ / ২২ সেপ্টেম্বর ২০২৬\nপ্রজ্ঞাপন নং-৩৫.০০.০০০০.০২০.২৬.০০৫.১৬-৫৪০';
 
   @override
-  String dataVersion(String version) {
-    return 'ডেটা সংস্করণ: $version';
+  String dataUpdated(DateTime date) {
+    final intl.DateFormat dateDateFormat = intl.DateFormat.yMMMMd(localeName);
+    final String dateString = dateDateFormat.format(date);
+
+    return 'ডেটা সর্বশেষ হালনাগাদ: $dateString';
   }
 
   @override

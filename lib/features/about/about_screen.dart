@@ -35,10 +35,11 @@ class AboutScreen extends StatelessWidget {
                 const SizedBox(height: 6),
                 Text(l10n.busSourceBody, style: context.text.body),
                 const Divider(height: 28),
-                Text(
-                  l10n.dataVersion(context.digits(fares.dataVersion)),
-                  style: context.text.label,
-                ),
+                if (fares.dataUpdated != null)
+                  Text(
+                    l10n.dataUpdated(fares.dataUpdated!),
+                    style: context.text.label,
+                  ),
                 Text(
                   mode == DataMode.local ? l10n.dataLocal : l10n.dataRemote,
                   style: context.text.label,

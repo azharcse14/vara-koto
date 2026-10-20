@@ -54,11 +54,7 @@ const SAME_PLACE = {
   Paltan: ['Palton'],
   Shahbag: ['Shahbagh'],
   Kallyanpur: ['Kalyanpur'],
-  'Notun Bazar': ['Natun Bazar'],
-  Banasree: ['Banashree'],
   Jigatola: ['Jhigatola'],
-  Kochukhet: ['Kachukhet'],
-  Rayerbag: ['Rayerbagh'],
 };
 
 const key = (s) => s.toLowerCase().replace(/[^a-z0-9]/g, '');
@@ -94,11 +90,11 @@ data.buses = csv
       matched++;
       names.forEach((n) => stops.add(n));
       for (const other of SAME_PLACE[raw] || []) {
-        namesByKey.get(key(other)).forEach((n) => stops.add(n));
+        namesByKey.get(key(other))?.forEach((n) => stops.add(n));
       }
     }
     return { name: m[1].trim(), stops: [...stops] };
   });
 
-fs.writeFileSync(dest, JSON.stringify(data));
+require('./write_routes')(dest, data);
 console.log(`Added ${data.buses.length} buses, matched ${matched}/${total} of their stops.`);

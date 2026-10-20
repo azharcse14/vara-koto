@@ -113,9 +113,9 @@
   "fareSource": "Fare source",
   "fareSourceBody": "BRTA fare chart for diesel buses. Minimum fare 10.00 taka.",
   "fareNotice": "22 September 2026\nNotification no. 35.00.0000.020.26.005.16-540",
-  "dataVersion": "Data version: {version}",
-  "@dataVersion": {
-    "placeholders": {"version": {"type": "String"}}
+  "dataUpdated": "Data last updated: {date}",
+  "@dataUpdated": {
+    "placeholders": {"date": {"type": "DateTime", "format": "yMMMMd"}}
   },
   "dataLocal": "All data is inside the app, so it works without internet.",
   "dataRemote": "Data updates from the server. Without internet, the last saved data is shown.",

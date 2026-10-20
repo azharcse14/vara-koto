@@ -482,11 +482,11 @@ abstract class AppLocalizations {
   /// **'22 September 2026\nNotification no. 35.00.0000.020.26.005.16-540'**
   String get fareNotice;
 
-  /// No description provided for @dataVersion.
+  /// No description provided for @dataUpdated.
   ///
   /// In en, this message translates to:
-  /// **'Data version: {version}'**
-  String dataVersion(String version);
+  /// **'Data last updated: {date}'**
+  String dataUpdated(DateTime date);
 
   /// No description provided for @dataLocal.
   ///

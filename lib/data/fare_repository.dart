@@ -28,7 +28,7 @@ class FareRepository extends ChangeNotifier {
   bool get isReady => _dataset != null;
   Object? get loadError => _loadError;
   List<StopEntry> get stops => _stops;
-  String get dataVersion => _dataset?.version ?? '';
+  DateTime? get dataUpdated => _dataset?.updated;
 
   /// Distinct route numbers (some routes have two variants with one number).
   int get routeCount => _routeCount;

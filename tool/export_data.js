@@ -48,9 +48,11 @@ const out = {
 
 const dest = path.join(__dirname, '..', 'assets', 'data', 'routes.json');
 fs.mkdirSync(path.dirname(dest), { recursive: true });
-fs.writeFileSync(dest, JSON.stringify(out));
+require('./write_routes')(dest, out);
 
 const kb = (fs.statSync(dest).size / 1024).toFixed(0);
 console.log(`Wrote ${cleaned.length} routes to ${dest} (${kb} KB), fixed ${fixedNulls} null diagonal cells.`);
 
-require('./add_buses'); // re-adds the bus list this file just overwrote
+// Re-apply what this file just overwrote: the newer BRTA chart, then the bus list.
+require('./build_from_chart');
+require('./add_buses');

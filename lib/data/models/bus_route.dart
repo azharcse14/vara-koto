@@ -122,6 +122,7 @@ class RouteDataset {
   const RouteDataset({
     required this.version,
     required this.source,
+    this.updated,
     required this.routes,
     this.buses = const [],
   });
@@ -129,12 +130,16 @@ class RouteDataset {
   /// ISO date of the fare chart, e.g. "2026-09-22". Newer data sorts higher.
   final String version;
   final String source;
+
+  /// When routes.json last changed (tool/write_routes.js); null in older files.
+  final DateTime? updated;
   final List<BusRoute> routes;
   final List<Bus> buses;
 
   factory RouteDataset.fromJson(Map<String, dynamic> json) => RouteDataset(
         version: json['version'] as String? ?? '0',
         source: json['source'] as String? ?? '',
+        updated: DateTime.tryParse(json['updated'] as String? ?? ''),
         routes: (json['routes'] as List)
             .map((r) => BusRoute.fromJson(r as Map<String, dynamic>))
             .toList(growable: false),
