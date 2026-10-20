@@ -33,4 +33,4 @@ String formatKmBn(double km) {
   return toBnDigits(text);
 }
 
-String taka(int amount) => '৳$amount';
+String taka(int amount) => '৳${toBnDigits(amount)}';

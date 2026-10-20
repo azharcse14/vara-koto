@@ -154,5 +154,9 @@ void main() {
       expect(formatKmBn(28.8), '২৮.৮');
       expect(formatKmBn(15), '১৫');
     });
+
+    test('taka uses Bangla digits', () {
+      expect(taka(10), '৳১০');
+    });
   });
 }
