@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/bangla_text.dart';
 import '../../../core/theme.dart';
 import '../../../data/models/bus_route.dart';
 
@@ -100,7 +101,7 @@ class FareMatrixTable extends StatelessWidget {
         color: background,
         borderRadius: BorderRadius.circular(6),
       ),
-      child: Text(isSelf ? '—' : '৳${route.fareBetween(i, j)}', style: style),
+      child: Text(isSelf ? '—' : taka(route.fareBetween(i, j)), style: style),
     );
   }
 }
