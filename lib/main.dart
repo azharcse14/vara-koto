@@ -1,25 +1,16 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
-import 'home_page.dart';
+import 'app.dart';
+import 'app_services.dart';
 
 void main() {
-  runApp(const MyApp());
-}
+  WidgetsFlutterBinding.ensureInitialized();
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final services = AppServices.fromConfig();
+  unawaited(services.fares.init());
+  unawaited(services.feedback.syncPending());
 
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      debugShowCheckedModeBanner: false,
-      home: const HomePage(),
-    );
-  }
+  runApp(BusFareApp(services: services));
 }
