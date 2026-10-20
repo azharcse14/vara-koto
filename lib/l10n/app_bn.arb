@@ -28,7 +28,7 @@
   "statMinFare": "সর্বনিম্ন ভাড়া",
 
   "directRoutes": "{count, plural, other{{n}টি রুটে সরাসরি যাওয়া যায়}}",
-  "resultsHint": "কম ভাড়ার রুট আগে। স্টপওয়ারি ভাড়া দেখতে রুটে ট্যাপ করুন।",
+  "resultsHint": "স্টপওয়ারি ভাড়া দেখতে রুটে ট্যাপ করুন।",
   "sameStop": "যাত্রার স্থান ও গন্তব্য একই হতে পারবে না।",
   "noCommonRoute": "“{from}” ও “{to}” একই রুটে পড়ে না। কাছাকাছি অন্য কোনো স্টপ বেছে দেখুন।",
 
@@ -36,7 +36,7 @@
   "loadErrorHint": "অ্যাপটি বন্ধ করে আবার খুলুন, অথবা নিচের বাটনে চাপ দিন।",
   "tryAgain": "আবার চেষ্টা করুন",
 
-  "onThisRoute": "এই রুটে: {from} থেকে {to}",
+  "busRoute": "বাসের রুট: {name}",
   "stopCount": "{count, plural, other{{n}টি স্টপ}}",
   "routeCount": "{count, plural, other{{n}টি রুট}}",
   "segmentCount": "{count, plural, other{{n}টি সেগমেন্ট}}",

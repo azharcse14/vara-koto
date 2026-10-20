@@ -201,8 +201,6 @@ class _HomeScreenState extends State<HomeScreen> {
               itemCount: c.results.length,
               itemBuilder: (context, index) => ResultCard(
                 result: c.results[index],
-                chosenFrom: c.from!.nameEn,
-                chosenTo: c.to!.nameEn,
                 onTap: () => _openDetail(c.results[index]),
               ),
               separatorBuilder: (context, index) => const SizedBox(height: 12),

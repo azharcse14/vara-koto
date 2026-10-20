@@ -239,7 +239,7 @@ abstract class AppLocalizations {
   /// No description provided for @resultsHint.
   ///
   /// In en, this message translates to:
-  /// **'Cheapest routes first. Tap a route for stop-by-stop fares.'**
+  /// **'Tap a route for stop-by-stop fares.'**
   String get resultsHint;
 
   /// No description provided for @sameStop.
@@ -272,11 +272,11 @@ abstract class AppLocalizations {
   /// **'Try again'**
   String get tryAgain;
 
-  /// No description provided for @onThisRoute.
+  /// No description provided for @busRoute.
   ///
   /// In en, this message translates to:
-  /// **'On this route: {from} to {to}'**
-  String onThisRoute(String from, String to);
+  /// **'Bus route: {name}'**
+  String busRoute(String name);
 
   /// No description provided for @stopCount.
   ///

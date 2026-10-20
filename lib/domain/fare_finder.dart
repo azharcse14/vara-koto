@@ -2,7 +2,8 @@ import '../data/models/bus_route.dart';
 import '../data/models/fare_result.dart';
 
 /// Finds every route that serves both stops and returns the official fare
-/// on each, cheapest first.
+/// on each, in routes.json order like the web server's /api/fare (the web
+/// app shows the first one).
 ///
 /// Stops are matched by exact English name, then exact alias (see
 /// [BusRoute.resolveStop]). The web server's findStop() also tried partial
@@ -24,11 +25,5 @@ List<FareResult> findFares(
     if (!seen.add('${route.id}|${route.pathKey}')) continue;
     found.add(FareResult.build(route, a, b));
   }
-
-  final indexed = found.indexed.toList();
-  indexed.sort((x, y) {
-    final byFare = x.$2.fare.compareTo(y.$2.fare);
-    return byFare != 0 ? byFare : x.$1.compareTo(y.$1);
-  });
-  return [for (final e in indexed) e.$2];
+  return found;
 }

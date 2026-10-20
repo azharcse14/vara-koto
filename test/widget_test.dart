@@ -51,7 +51,7 @@ void main() {
     test('Kalshi to Farmgate: A101 at ৳31, and A280 via Kalshi Mor at ৳24', () {
       final results = findFares(data.routes, 'Kalshi', 'Farmgate');
       expect(results.map((r) => '${r.route.id}:${r.from.nameEn}:${r.fare}'),
-          ['A280:Kalshi Mor:24', 'A101:Kalshi:31']);
+          ['A101:Kalshi:31', 'A280:Kalshi Mor:24']);
     });
 
     test('Mirpur-1 to Farmgate only uses Mirpur-1 (old server showed 14 routes)', () {
@@ -96,12 +96,11 @@ void main() {
       expect(results.where((r) => r.route.id == 'A260').length, 1);
     });
 
-    test('results are sorted cheapest first', () {
-      final results = findFares(data.routes, 'Mirpur-10', 'Farmgate');
-      expect(results.length, greaterThan(1));
-      for (var i = 1; i < results.length; i++) {
-        expect(results[i].fare, greaterThanOrEqualTo(results[i - 1].fare));
-      }
+    test('Kalshi to Mirpur-10: A101 first at ৳13, like the web', () {
+      final first = findFares(data.routes, 'Kalshi', 'Mirpur-10').first;
+      expect(first.route.id, 'A101');
+      expect(first.fare, 13);
+      expect(first.path.length, 3);
     });
 
     test('same stop or unknown stop gives no result', () {

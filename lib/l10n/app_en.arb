@@ -36,7 +36,7 @@
     "description": "count picks the plural form; n is the same number, written in the app's digits.",
     "placeholders": {"count": {"type": "int"}, "n": {"type": "String"}}
   },
-  "resultsHint": "Cheapest routes first. Tap a route for stop-by-stop fares.",
+  "resultsHint": "Tap a route for stop-by-stop fares.",
   "sameStop": "Start and destination can't be the same.",
   "noCommonRoute": "No single route goes from “{from}” to “{to}”. Try a nearby stop.",
   "@noCommonRoute": {
@@ -47,9 +47,9 @@
   "loadErrorHint": "Close and reopen the app, or tap the button below.",
   "tryAgain": "Try again",
 
-  "onThisRoute": "On this route: {from} to {to}",
-  "@onThisRoute": {
-    "placeholders": {"from": {"type": "String"}, "to": {"type": "String"}}
+  "busRoute": "Bus route: {name}",
+  "@busRoute": {
+    "placeholders": {"name": {"type": "String"}}
   },
   "stopCount": "{count, plural, =1{{n} stop} other{{n} stops}}",
   "@stopCount": {

@@ -88,8 +88,7 @@ class AppLocalizationsBn extends AppLocalizations {
   }
 
   @override
-  String get resultsHint =>
-      'কম ভাড়ার রুট আগে। স্টপওয়ারি ভাড়া দেখতে রুটে ট্যাপ করুন।';
+  String get resultsHint => 'স্টপওয়ারি ভাড়া দেখতে রুটে ট্যাপ করুন।';
 
   @override
   String get sameStop => 'যাত্রার স্থান ও গন্তব্য একই হতে পারবে না।';
@@ -110,8 +109,8 @@ class AppLocalizationsBn extends AppLocalizations {
   String get tryAgain => 'আবার চেষ্টা করুন';
 
   @override
-  String onThisRoute(String from, String to) {
-    return 'এই রুটে: $from থেকে $to';
+  String busRoute(String name) {
+    return 'বাসের রুট: $name';
   }
 
   @override

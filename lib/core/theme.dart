@@ -68,8 +68,8 @@ class AppColors extends ThemeExtension<AppColors> {
     redSoft: Color(0x14DC2626),
     redLine: Color(0x4DDC2626),
     text: Color(0xFF0F172A),
-    textSecondary: Color(0xFF475569),
-    textMuted: Color(0xFF64748B),
+    textSecondary: Color(0xFF334155),
+    textMuted: Color(0xFF475569),
   );
 
   /// The logo tile; the same in both themes.
@@ -117,9 +117,14 @@ class AppColors extends ThemeExtension<AppColors> {
 
 class AppText {
   AppText._(AppColors c)
-      : caption = TextStyle(fontSize: 12, height: 1.4, color: c.textMuted),
-        label = TextStyle(fontSize: 13, height: 1.4, color: c.textSecondary),
-        body = TextStyle(fontSize: 15, height: 1.5, color: c.text),
+      // Bangla strokes are thin at Regular/12px, so small text runs a size up
+      // and at Medium weight to stay legible.
+      : caption = TextStyle(
+            fontSize: 13, height: 1.4, fontWeight: FontWeight.w500, color: c.textMuted),
+        label = TextStyle(
+            fontSize: 14, height: 1.4, fontWeight: FontWeight.w500, color: c.textSecondary),
+        body = TextStyle(
+            fontSize: 16, height: 1.5, fontWeight: FontWeight.w500, color: c.text),
         bodyStrong = TextStyle(
             fontSize: 16, height: 1.4, fontWeight: FontWeight.w600, color: c.text),
         title = TextStyle(

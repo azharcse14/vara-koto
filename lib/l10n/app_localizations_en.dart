@@ -89,8 +89,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get resultsHint =>
-      'Cheapest routes first. Tap a route for stop-by-stop fares.';
+  String get resultsHint => 'Tap a route for stop-by-stop fares.';
 
   @override
   String get sameStop => 'Start and destination can\'t be the same.';
@@ -111,8 +110,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tryAgain => 'Try again';
 
   @override
-  String onThisRoute(String from, String to) {
-    return 'On this route: $from to $to';
+  String busRoute(String name) {
+    return 'Bus route: $name';
   }
 
   @override
