@@ -42,13 +42,13 @@ class ResultCard extends StatelessWidget {
                   context.name(route.nameBn, route.nameEn),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: AppText.body.copyWith(fontWeight: FontWeight.w600),
+                  style: context.text.body.copyWith(fontWeight: FontWeight.w600),
                 ),
                 Text(
                   context.altName(route.nameBn, route.nameEn),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: AppText.caption,
+                  style: context.text.caption,
                 ),
                 const SizedBox(height: 6),
                 if (renamed)
@@ -57,12 +57,12 @@ class ResultCard extends StatelessWidget {
                       context.name(result.from.nameBn, result.from.nameEn),
                       context.name(result.to.nameBn, result.to.nameEn),
                     ),
-                    style: AppText.label.copyWith(color: AppColors.text),
+                    style: context.text.label.copyWith(color: context.colors.text),
                   ),
                 Text(
                   l10n.stopCount(
                       result.path.length, context.digits(result.path.length)),
-                  style: AppText.label,
+                  style: context.text.label,
                 ),
               ],
             ),
@@ -71,13 +71,13 @@ class ResultCard extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              Text(context.taka(result.fare), style: AppText.fare),
+              Text(context.taka(result.fare), style: context.text.fare),
               const SizedBox(height: 4),
-              Text(l10n.fare, style: AppText.caption),
+              Text(l10n.fare, style: context.text.caption),
             ],
           ),
           const SizedBox(width: 4),
-          const Icon(Icons.chevron_right, color: AppColors.textMuted),
+          Icon(Icons.chevron_right, color: context.colors.textMuted),
         ],
       ),
     );

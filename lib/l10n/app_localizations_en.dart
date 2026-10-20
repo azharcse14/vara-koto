@@ -48,6 +48,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get systemDefault => 'System';
 
   @override
+  String get theme => 'Theme';
+
+  @override
+  String get light => 'Light';
+
+  @override
+  String get dark => 'Dark';
+
+  @override
   String get idleHintStart =>
       'Pick where you get on and where you get off to see the official fare.';
 

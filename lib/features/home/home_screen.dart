@@ -95,14 +95,16 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle.light,
+      value: Theme.of(context).brightness == Brightness.dark
+          ? SystemUiOverlayStyle.light
+          : SystemUiOverlayStyle.dark,
       child: Scaffold(
         body: DecoratedBox(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors: [AppColors.bg, AppColors.bgDeep, AppColors.bgEnd],
+              colors: [context.colors.bg, context.colors.bgDeep, context.colors.bgEnd],
               stops: [0, 0.5, 1],
             ),
           ),
@@ -186,9 +188,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   Text(
                     l10n.directRoutes(
                         c.results.length, context.digits(c.results.length)),
-                    style: AppText.bodyStrong,
+                    style: context.text.bodyStrong,
                   ),
-                  Text(l10n.resultsHint, style: AppText.caption),
+                  Text(l10n.resultsHint, style: context.text.caption),
                 ],
               ),
             ),
@@ -241,7 +243,7 @@ class _Header extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(14),
                   gradient: const LinearGradient(
-                    colors: [AppColors.amber, AppColors.orange],
+                    colors: AppColors.logoGradient,
                   ),
                 ),
                 child: const Text('🚌', style: TextStyle(fontSize: 22)),
@@ -255,9 +257,9 @@ class _Header extends StatelessWidget {
                       fit: BoxFit.scaleDown,
                       alignment: AlignmentDirectional.centerStart,
                       child: Text(l10n.appTitle,
-                          maxLines: 1, style: AppText.display),
+                          maxLines: 1, style: context.text.display),
                     ),
-                    Text(l10n.appSubtitle, style: AppText.label),
+                    Text(l10n.appSubtitle, style: context.text.label),
                   ],
                 ),
               ),
@@ -265,27 +267,27 @@ class _Header extends StatelessWidget {
                 tooltip: l10n.feedback,
                 visualDensity: VisualDensity.compact,
                 onPressed: onFeedback,
-                icon: const Icon(Icons.rate_review_outlined,
-                    color: AppColors.textSecondary),
+                icon: Icon(Icons.rate_review_outlined,
+                    color: context.colors.textSecondary),
               ),
               IconButton(
                 tooltip: l10n.about,
                 visualDensity: VisualDensity.compact,
                 onPressed: onAbout,
-                icon: const Icon(Icons.info_outline,
-                    color: AppColors.textSecondary),
+                icon: Icon(Icons.info_outline,
+                    color: context.colors.textSecondary),
               ),
               IconButton(
                 tooltip: l10n.settings,
                 visualDensity: VisualDensity.compact,
                 onPressed: onSettings,
-                icon: const Icon(Icons.settings_outlined,
-                    color: AppColors.textSecondary),
+                icon: Icon(Icons.settings_outlined,
+                    color: context.colors.textSecondary),
               ),
             ],
           ),
           const SizedBox(height: 10),
-          Text(l10n.tagline, style: AppText.caption),
+          Text(l10n.tagline, style: context.text.caption),
         ],
       ),
     );
@@ -313,7 +315,7 @@ class _IdleHint extends StatelessWidget {
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 4),
-          child: Text(hint, style: AppText.label),
+          child: Text(hint, style: context.text.label),
         ),
         const SizedBox(height: 16),
         AppCard(
@@ -352,8 +354,8 @@ class _Stat extends StatelessWidget {
     return Expanded(
       child: Column(
         children: [
-          Text(value, style: AppText.title),
-          Text(label, style: AppText.caption),
+          Text(value, style: context.text.title),
+          Text(label, style: context.text.caption),
         ],
       ),
     );
@@ -368,15 +370,15 @@ class _MessageBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppCard(
-      color: AppColors.redSoft,
-      borderColor: const Color(0x4DF87171),
+      color: context.colors.redSoft,
+      borderColor: context.colors.redLine,
       radius: 14,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Icon(Icons.info_outline, color: AppColors.red, size: 20),
+          Icon(Icons.info_outline, color: context.colors.red, size: 20),
           const SizedBox(width: 10),
-          Expanded(child: Text(message, style: AppText.body)),
+          Expanded(child: Text(message, style: context.text.body)),
         ],
       ),
     );
@@ -399,13 +401,13 @@ class _LoadError extends StatelessWidget {
           children: [
             Text(
               l10n.loadError,
-              style: AppText.title,
+              style: context.text.title,
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 6),
             Text(
               l10n.loadErrorHint,
-              style: AppText.label,
+              style: context.text.label,
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 20),

@@ -48,6 +48,15 @@ class AppLocalizationsBn extends AppLocalizations {
   String get systemDefault => 'সিস্টেম';
 
   @override
+  String get theme => 'থিম';
+
+  @override
+  String get light => 'লাইট';
+
+  @override
+  String get dark => 'ডার্ক';
+
+  @override
   String get idleHintStart =>
       'কোথা থেকে উঠবেন আর কোথায় নামবেন, বেছে নিলেই সরকারি ভাড়া দেখাবে।';
 

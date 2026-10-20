@@ -31,7 +31,7 @@ class RouteDetailScreen extends StatelessWidget {
                 context.name(route.nameBn, route.nameEn),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: AppText.bodyStrong,
+                style: context.text.bodyStrong,
               ),
             ),
           ],

@@ -11,25 +11,26 @@ class AppCard extends StatelessWidget {
     this.onTap,
     this.padding = const EdgeInsets.all(16),
     this.radius = 20,
-    this.color = AppColors.card,
-    this.borderColor = AppColors.border,
+    this.color,
+    this.borderColor,
   });
 
   final Widget child;
   final VoidCallback? onTap;
   final EdgeInsetsGeometry padding;
   final double radius;
-  final Color color;
-  final Color borderColor;
+  /// Defaults to the theme's card and border colors.
+  final Color? color;
+  final Color? borderColor;
 
   @override
   Widget build(BuildContext context) {
     final content = Padding(padding: padding, child: child);
     return Material(
-      color: color,
+      color: color ?? context.colors.card,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(radius),
-        side: BorderSide(color: borderColor),
+        side: BorderSide(color: borderColor ?? context.colors.border),
       ),
       clipBehavior: Clip.antiAlias,
       child: onTap == null ? content : InkWell(onTap: onTap, child: content),
@@ -48,19 +49,19 @@ class RouteBadge extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
       decoration: BoxDecoration(
-        color: AppColors.amberSoft,
+        color: context.colors.amberSoft,
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: AppColors.amberLine),
+        border: Border.all(color: context.colors.amberLine),
       ),
       child: Text(
         routeNo,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
-        style: const TextStyle(
+        style: TextStyle(
           fontSize: 13,
           height: 1.4,
           fontWeight: FontWeight.w700,
-          color: AppColors.amber,
+          color: context.colors.amber,
         ),
       ),
     );
@@ -80,8 +81,8 @@ class SectionHeader extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title, style: AppText.bodyStrong),
-          if (subtitle != null) Text(subtitle!, style: AppText.caption),
+          Text(title, style: context.text.bodyStrong),
+          if (subtitle != null) Text(subtitle!, style: context.text.caption),
         ],
       ),
     );
@@ -95,13 +96,14 @@ class StopName extends StatelessWidget {
     super.key,
     required this.nameBn,
     required this.nameEn,
-    this.style = AppText.bodyStrong,
+    this.style,
     this.align = CrossAxisAlignment.start,
   });
 
   final String nameBn;
   final String nameEn;
-  final TextStyle style;
+  /// Defaults to bodyStrong.
+  final TextStyle? style;
   final CrossAxisAlignment align;
 
   @override
@@ -111,9 +113,10 @@ class StopName extends StatelessWidget {
     return Column(
       crossAxisAlignment: align,
       children: [
-        Text(context.name(nameBn, nameEn), style: style, textAlign: textAlign),
+        Text(context.name(nameBn, nameEn),
+            style: style ?? context.text.bodyStrong, textAlign: textAlign),
         Text(context.altName(nameBn, nameEn),
-            style: AppText.label, textAlign: textAlign),
+            style: context.text.label, textAlign: textAlign),
       ],
     );
   }

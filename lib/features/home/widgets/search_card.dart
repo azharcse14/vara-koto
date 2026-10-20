@@ -40,7 +40,7 @@ class SearchCard extends StatelessWidget {
             children: [
               _StopField(
                 label: l10n.fromLabel,
-                dotColor: AppColors.green,
+                dotColor: context.colors.green,
                 stop: from,
                 placeholder: l10n.fromPlaceholder,
                 onTap: onPickFrom,
@@ -52,7 +52,7 @@ class SearchCard extends StatelessWidget {
               ),
               _StopField(
                 label: l10n.toLabel,
-                dotColor: AppColors.red,
+                dotColor: context.colors.red,
                 stop: to,
                 placeholder: l10n.toPlaceholder,
                 onTap: onPickTo,
@@ -60,14 +60,14 @@ class SearchCard extends StatelessWidget {
             ],
           ),
           // Line joining the two dots.
-          const Positioned(
+          Positioned(
             left: _leftInset + _dotSize / 2 - 1,
             top: dotCenter + _dotSize / 2 + 3,
             height: _fieldHeight + 1 - _dotSize - 6,
             child: IgnorePointer(
               child: SizedBox(
                 width: 2,
-                child: ColoredBox(color: Color(0x26FFFFFF)),
+                child: ColoredBox(color: context.colors.rail),
               ),
             ),
           ),
@@ -114,7 +114,7 @@ class _StopField extends StatelessWidget {
                 height: _dotSize,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: AppColors.bg,
+                  color: context.colors.bg,
                   border: Border.all(color: dotColor, width: 3.5),
                 ),
               ),
@@ -124,14 +124,14 @@ class _StopField extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(label, style: AppText.caption),
+                    Text(label, style: context.text.caption),
                     if (selected == null)
                       Text(
                         placeholder,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: AppText.bodyStrong
-                            .copyWith(color: AppColors.textMuted),
+                        style: context.text.bodyStrong
+                            .copyWith(color: context.colors.textMuted),
                       )
                     else
                       Text.rich(
@@ -139,10 +139,10 @@ class _StopField extends StatelessWidget {
                           TextSpan(
                               text: context.name(
                                   selected.nameBn, selected.nameEn),
-                              style: AppText.bodyStrong),
+                              style: context.text.bodyStrong),
                           TextSpan(
                               text: '  ${context.altName(selected.nameBn, selected.nameEn)}',
-                              style: AppText.label),
+                              style: context.text.label),
                         ]),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
@@ -176,8 +176,8 @@ class _SwapButtonState extends State<_SwapButton> {
     return Tooltip(
       message: context.l10n.swap,
       child: Material(
-        color: AppColors.surface,
-        shape: const CircleBorder(side: BorderSide(color: AppColors.amberLine)),
+        color: context.colors.surface,
+        shape: CircleBorder(side: BorderSide(color: context.colors.amberLine)),
         clipBehavior: Clip.antiAlias,
         child: InkWell(
           onTap: () {
@@ -193,7 +193,7 @@ class _SwapButtonState extends State<_SwapButton> {
                   ? Duration.zero
                   : const Duration(milliseconds: 250),
               curve: Curves.easeOut,
-              child: const Icon(Icons.swap_vert, color: AppColors.amber),
+              child: Icon(Icons.swap_vert, color: context.colors.amber),
             ),
           ),
         ),

@@ -5,7 +5,6 @@ import '../../../core/theme.dart';
 import '../../../data/models/fare_result.dart';
 import '../../../widgets/common.dart';
 
-const _railColor = Color(0x26FFFFFF);
 const _rowHeight = 64.0;
 
 /// Every stop in the direction of travel. The right column is what you pay
@@ -61,10 +60,10 @@ class _StopRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dotColor = isFirst
-        ? AppColors.green
+        ? context.colors.green
         : isLast
-            ? AppColors.red
-            : AppColors.textMuted;
+            ? context.colors.red
+            : context.colors.textMuted;
     final endpoint = isFirst || isLast;
     final l10n = context.l10n;
 
@@ -80,7 +79,7 @@ class _StopRow extends StatelessWidget {
                 Expanded(
                   child: Container(
                     width: 2,
-                    color: isFirst ? Colors.transparent : _railColor,
+                    color: isFirst ? Colors.transparent : context.colors.rail,
                   ),
                 ),
                 Container(
@@ -88,7 +87,7 @@ class _StopRow extends StatelessWidget {
                   height: endpoint ? 14 : 10,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: endpoint ? AppColors.bg : dotColor,
+                    color: endpoint ? context.colors.bg : dotColor,
                     border: endpoint
                         ? Border.all(color: dotColor, width: 3.5)
                         : null,
@@ -97,7 +96,7 @@ class _StopRow extends StatelessWidget {
                 Expanded(
                   child: Container(
                     width: 2,
-                    color: isLast ? Colors.transparent : _railColor,
+                    color: isLast ? Colors.transparent : context.colors.rail,
                   ),
                 ),
               ],
@@ -114,12 +113,12 @@ class _StopRow extends StatelessWidget {
                     TextSpan(
                       text: context.name(nameBn, nameEn),
                       style: endpoint
-                          ? AppText.bodyStrong
-                          : AppText.body.copyWith(fontWeight: FontWeight.w500),
+                          ? context.text.bodyStrong
+                          : context.text.body.copyWith(fontWeight: FontWeight.w500),
                     ),
                     TextSpan(
                         text: '  ${context.altName(nameBn, nameEn)}',
-                        style: AppText.caption),
+                        style: context.text.caption),
                   ]),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -128,7 +127,7 @@ class _StopRow extends StatelessWidget {
                   segmentFare == null
                       ? l10n.getOnHere
                       : l10n.fromPreviousStop(context.taka(segmentFare!)),
-                  style: AppText.caption,
+                  style: context.text.caption,
                 ),
               ],
             ),
@@ -142,7 +141,7 @@ class _StopRow extends StatelessWidget {
                     style: TextStyle(
                       fontSize: isLast ? 20 : 16,
                       fontWeight: isLast ? FontWeight.w700 : FontWeight.w600,
-                      color: isLast ? AppColors.amber : AppColors.text,
+                      color: isLast ? context.colors.amber : context.colors.text,
                     ),
                     semanticsLabel:
                         l10n.fareToHere(context.digits(fareFromStart!)),

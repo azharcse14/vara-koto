@@ -53,11 +53,11 @@ class _StopPickerScreenState extends State<StopPickerScreen> {
           onSubmitted: (_) {
             if (_results.isNotEmpty) _choose(_results.first);
           },
-          style: AppText.bodyStrong,
-          cursorColor: AppColors.amber,
+          style: context.text.bodyStrong,
+          cursorColor: context.colors.amber,
           decoration: InputDecoration(
             hintText: l10n.searchHint(widget.label),
-            hintStyle: AppText.body.copyWith(color: AppColors.textMuted),
+            hintStyle: context.text.body.copyWith(color: context.colors.textMuted),
             border: InputBorder.none,
           ),
         ),
@@ -85,16 +85,16 @@ class _StopPickerScreenState extends State<StopPickerScreen> {
                 final stop = _results[index];
                 return ListTile(
                   onTap: () => _choose(stop),
-                  leading: const Icon(Icons.place_outlined,
-                      color: AppColors.textSecondary),
+                  leading: Icon(Icons.place_outlined,
+                      color: context.colors.textSecondary),
                   title: Text(context.name(stop.nameBn, stop.nameEn),
-                      style: AppText.bodyStrong),
+                      style: context.text.bodyStrong),
                   subtitle: Text(context.altName(stop.nameBn, stop.nameEn),
-                      style: AppText.label),
+                      style: context.text.label),
                   trailing: Text(
                     l10n.routeCount(
                         stop.routeCount, context.digits(stop.routeCount)),
-                    style: AppText.caption,
+                    style: context.text.caption,
                   ),
                 );
               },
@@ -116,9 +116,9 @@ class _NoMatch extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(l10n.noStopFound(query), style: AppText.bodyStrong),
+          Text(l10n.noStopFound(query), style: context.text.bodyStrong),
           const SizedBox(height: 6),
-          Text(l10n.noStopFoundHint, style: AppText.label),
+          Text(l10n.noStopFoundHint, style: context.text.label),
         ],
       ),
     );

@@ -30,9 +30,9 @@ class FareMatrixTable extends StatelessWidget {
     final stops = route.stops;
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: AppColors.card,
+        color: context.colors.card,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: context.colors.border),
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(20),
@@ -52,7 +52,7 @@ class FareMatrixTable extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(8, 0, 8, 6),
                       child: Text(context.l10n.matrixCorner,
-                          style: AppText.caption),
+                          style: context.text.caption),
                     ),
                   ),
                 ),
@@ -82,18 +82,18 @@ class FareMatrixTable extends StatelessWidget {
     final Color background;
     final TextStyle style;
     if (isTarget) {
-      background = AppColors.amber;
-      style = const TextStyle(
-          fontSize: 14, fontWeight: FontWeight.w700, color: AppColors.onAmber);
+      background = context.colors.amber;
+      style = TextStyle(
+          fontSize: 14, fontWeight: FontWeight.w700, color: context.colors.onAmber);
     } else if (inPickedLine) {
-      background = AppColors.amberFaint;
-      style = const TextStyle(
-          fontSize: 13, fontWeight: FontWeight.w600, color: AppColors.text);
+      background = context.colors.amberFaint;
+      style = TextStyle(
+          fontSize: 13, fontWeight: FontWeight.w600, color: context.colors.text);
     } else {
       background = Colors.transparent;
       style = TextStyle(
           fontSize: 13,
-          color: isSelf ? AppColors.textMuted : AppColors.textSecondary);
+          color: isSelf ? context.colors.textMuted : context.colors.textSecondary);
     }
 
     return Container(
@@ -131,7 +131,7 @@ class _HeadCell extends StatelessWidget {
           fontSize: 11,
           height: 1.3,
           fontWeight: picked ? FontWeight.w700 : FontWeight.w500,
-          color: picked ? AppColors.amber : AppColors.textSecondary,
+          color: picked ? context.colors.amber : context.colors.textSecondary,
         ),
       ),
     );
@@ -158,7 +158,7 @@ class _RowHead extends StatelessWidget {
           fontSize: 12,
           height: 1.25,
           fontWeight: picked ? FontWeight.w700 : FontWeight.w500,
-          color: picked ? AppColors.amber : AppColors.text,
+          color: picked ? context.colors.amber : context.colors.text,
         ),
       ),
     );

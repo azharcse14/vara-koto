@@ -16,8 +16,8 @@ class FareHero extends StatelessWidget {
     final stops = result.path.length;
     final segments = result.segments.length;
     return AppCard(
-      color: AppColors.amberFaint,
-      borderColor: AppColors.amberLine,
+      color: context.colors.amberFaint,
+      borderColor: context.colors.amberLine,
       padding: const EdgeInsets.all(20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -31,9 +31,9 @@ class FareHero extends StatelessWidget {
                   nameEn: result.from.nameEn,
                 ),
               ),
-              const Padding(
+              Padding(
                 padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                child: Icon(Icons.arrow_forward, color: AppColors.amber),
+                child: Icon(Icons.arrow_forward, color: context.colors.amber),
               ),
               Expanded(
                 child: StopName(
@@ -45,9 +45,9 @@ class FareHero extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 20),
-          Text(l10n.totalFare, style: AppText.label),
+          Text(l10n.totalFare, style: context.text.label),
           const SizedBox(height: 6),
-          Text(context.taka(result.fare), style: AppText.fareHero),
+          Text(context.taka(result.fare), style: context.text.fareHero),
           const SizedBox(height: 16),
           Wrap(
             spacing: 8,
@@ -74,11 +74,11 @@ class _Tag extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
-        color: AppColors.card,
+        color: context.colors.card,
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: context.colors.border),
       ),
-      child: Text(text, style: AppText.label),
+      child: Text(text, style: context.text.label),
     );
   }
 }

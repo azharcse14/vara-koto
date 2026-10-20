@@ -16,6 +16,9 @@
   "settings": "Settings",
   "language": "Language",
   "systemDefault": "System",
+  "theme": "Theme",
+  "light": "Light",
+  "dark": "Dark",
 
   "idleHintStart": "Pick where you get on and where you get off to see the official fare.",
   "idleHintTo": "Now pick where you get off.",

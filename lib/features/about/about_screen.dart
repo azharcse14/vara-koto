@@ -25,19 +25,19 @@ class AboutScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(l10n.fareSource, style: AppText.bodyStrong),
+                Text(l10n.fareSource, style: context.text.bodyStrong),
                 const SizedBox(height: 6),
-                Text(l10n.fareSourceBody, style: AppText.body),
+                Text(l10n.fareSourceBody, style: context.text.body),
                 const SizedBox(height: 6),
-                Text(l10n.fareNotice, style: AppText.label),
+                Text(l10n.fareNotice, style: context.text.label),
                 const Divider(height: 28),
                 Text(
                   l10n.dataVersion(context.digits(fares.dataVersion)),
-                  style: AppText.label,
+                  style: context.text.label,
                 ),
                 Text(
                   mode == DataMode.local ? l10n.dataLocal : l10n.dataRemote,
-                  style: AppText.label,
+                  style: context.text.label,
                 ),
               ],
             ),

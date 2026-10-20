@@ -29,9 +29,9 @@ class _SettingsSheet extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(l10n.settings, style: AppText.title),
+            Text(l10n.settings, style: context.text.title),
             const SizedBox(height: 20),
-            Text(l10n.language, style: AppText.label),
+            Text(l10n.language, style: context.text.label),
             const SizedBox(height: 8),
             // '' stands for "follow the phone"; SegmentedButton can't hold null.
             SegmentedButton<String>(
@@ -45,6 +45,21 @@ class _SettingsSheet extends StatelessWidget {
               showSelectedIcon: false,
               onSelectionChanged: (picked) => settings.setLocale(
                   picked.first.isEmpty ? null : Locale(picked.first)),
+            ),
+            const SizedBox(height: 20),
+            Text(l10n.theme, style: context.text.label),
+            const SizedBox(height: 8),
+            SegmentedButton<ThemeMode>(
+              segments: [
+                ButtonSegment(
+                    value: ThemeMode.system, label: Text(l10n.systemDefault)),
+                ButtonSegment(value: ThemeMode.light, label: Text(l10n.light)),
+                ButtonSegment(value: ThemeMode.dark, label: Text(l10n.dark)),
+              ],
+              selected: {settings.themeMode},
+              showSelectedIcon: false,
+              onSelectionChanged: (picked) =>
+                  settings.setThemeMode(picked.first),
             ),
           ],
         ),

@@ -63,14 +63,14 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
         children: outcome != null
             ? [_Done(outcome: outcome, onWriteAnother: () => setState(() => _outcome = null))]
             : [
-                Text(l10n.feedbackIntro, style: AppText.label),
+                Text(l10n.feedbackIntro, style: context.text.label),
                 const SizedBox(height: 16),
                 TextField(
                   controller: _name,
                   textInputAction: TextInputAction.next,
                   textCapitalization: TextCapitalization.words,
-                  style: AppText.body,
-                  decoration: appInputDecoration(l10n.feedbackName),
+                  style: context.text.body,
+                  decoration: appInputDecoration(context, l10n.feedbackName),
                 ),
                 const SizedBox(height: 12),
                 TextField(
@@ -79,8 +79,8 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                   maxLines: 8,
                   maxLength: 2000,
                   onChanged: (_) => setState(() {}),
-                  style: AppText.body,
-                  decoration: appInputDecoration(l10n.feedbackMessage),
+                  style: context.text.body,
+                  decoration: appInputDecoration(context, l10n.feedbackMessage),
                 ),
                 const SizedBox(height: 8),
                 FilledButton(
@@ -102,13 +102,13 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                     padding: const EdgeInsets.only(top: 12),
                     child: Text(
                       l10n.feedbackFailed,
-                      style: const TextStyle(color: AppColors.red),
+                      style: TextStyle(color: context.colors.red),
                     ),
                   ),
                 if (widget.mode == DataMode.local)
                   Padding(
                     padding: const EdgeInsets.only(top: 16),
-                    child: Text(l10n.feedbackLocalNote, style: AppText.caption),
+                    child: Text(l10n.feedbackLocalNote, style: context.text.caption),
                   ),
               ],
       ),
@@ -128,20 +128,20 @@ class _Done extends StatelessWidget {
     final l10n = context.l10n;
     return AppCard(
       padding: const EdgeInsets.all(20),
-      borderColor: const Color(0x4D22D3A5),
+      borderColor: context.colors.greenLine,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Icon(Icons.check_circle_outline, color: AppColors.green, size: 32),
+          Icon(Icons.check_circle_outline, color: context.colors.green, size: 32),
           const SizedBox(height: 12),
           Text(
             sent ? l10n.feedbackSent : l10n.feedbackSaved,
-            style: AppText.title,
+            style: context.text.title,
           ),
           const SizedBox(height: 6),
           Text(
             sent ? l10n.feedbackSentHint : l10n.feedbackSavedHint,
-            style: AppText.label,
+            style: context.text.label,
           ),
           const SizedBox(height: 16),
           OutlinedButton(
