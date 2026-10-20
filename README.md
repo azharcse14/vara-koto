@@ -71,18 +71,6 @@ flutter build apk --dart-define=DATA_MODE=remote --dart-define=API_BASE=https://
 
 The mode is chosen in one place, `lib/app_services.dart`. The screens never know which mode is active.
 
-## Moving to a server
-
-The server side is a small Express app; the files are in `server_addition/`.
-
-1. Copy `server_addition/routes_api.js` to `server/routes/`.
-2. Copy `assets/data/routes.json` to `server/data/`.
-3. Add `app.use('/api', require('./routes/routes_api'));` to `server.js`.
-4. Optionally add `compression`, which shrinks the download from about 260 KB to 42 KB.
-5. In the Android app, add `<uses-permission android:name="android.permission.INTERNET"/>` to the main `AndroidManifest.xml`. For a plain `http://` server, also add `android:usesCleartextTraffic="true"`.
-
-When `remote` mode starts, the app uses whichever is newer, its cache or the bundled copy. It then checks the server in the background and picks up new data if the `version` changed.
-
 ## Updating fares
 
 1. Edit `fareData.js`.
@@ -112,13 +100,12 @@ assets/
 tool/
   export_data.js           fareData.js → routes.json
   find_spelling_variants.js lists stops spelled two ways in the data
-server_addition/           Express files for server mode and a fare.js fix
 test/                      logic tests against the real data
 ```
 
 ## Accuracy notes
 
-**Exact stop matching.** A stop is matched by its exact name, or by an exact alias. It is never matched on part of a name, so "Mirpur-1" can't turn into "Mirpur-12" on a route that doesn't serve Mirpur-1. The same fix for the web server's API is in `server_addition/fare.js`. The app and the fixed server return identical results for all 137,270 stop pairs.
+**Exact stop matching.** A stop is matched by its exact name, or by an exact alias. It is never matched on part of a name, so "Mirpur-1" can't turn into "Mirpur-12" on a route that doesn't serve Mirpur-1.
 
 **Spelling variants.** Some places are spelled differently on different routes, such as Palton/Paltan or Asadgate/Asad Gate. When a route uses another spelling, the result shows that route's own stop names, so you know where to board. Aliases don't link every variant yet; `node tool/find_spelling_variants.js` lists them. Using one English name per stop in the data fixes this.
 

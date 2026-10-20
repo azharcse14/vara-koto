@@ -51,6 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
         builder: (_) => StopPickerScreen(
           fares: _fares,
           label: isFrom ? context.l10n.fromLabel : context.l10n.toLabel,
+          exclude: isFrom ? _controller.to : _controller.from,
         ),
       ),
     );

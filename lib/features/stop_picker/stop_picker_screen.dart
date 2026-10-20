@@ -7,12 +7,16 @@ import '../../data/models/stop_entry.dart';
 
 /// Full-screen search. Returns the chosen [StopEntry] via Navigator.pop.
 class StopPickerScreen extends StatefulWidget {
-  const StopPickerScreen({super.key, required this.fares, required this.label});
+  const StopPickerScreen(
+      {super.key, required this.fares, required this.label, this.exclude});
 
   final FareRepository fares;
 
   /// "From" or "To", in the app's language.
   final String label;
+
+  /// The stop already picked on the other side, left out of the list.
+  final StopEntry? exclude;
 
   @override
   State<StopPickerScreen> createState() => _StopPickerScreenState();
@@ -20,7 +24,7 @@ class StopPickerScreen extends StatefulWidget {
 
 class _StopPickerScreenState extends State<StopPickerScreen> {
   final _query = TextEditingController();
-  late List<StopEntry> _results = widget.fares.stops;
+  late List<StopEntry> _results = _withoutExcluded(widget.fares.stops);
 
   @override
   void dispose() {
@@ -29,8 +33,12 @@ class _StopPickerScreenState extends State<StopPickerScreen> {
   }
 
   void _onChanged(String value) {
-    setState(() => _results = widget.fares.searchStops(value));
+    setState(
+        () => _results = _withoutExcluded(widget.fares.searchStops(value)));
   }
+
+  List<StopEntry> _withoutExcluded(List<StopEntry> stops) =>
+      stops.where((s) => s != widget.exclude).toList();
 
   void _clear() {
     _query.clear();
@@ -57,7 +65,8 @@ class _StopPickerScreenState extends State<StopPickerScreen> {
           cursorColor: context.colors.amber,
           decoration: InputDecoration(
             hintText: l10n.searchHint(widget.label),
-            hintStyle: context.text.body.copyWith(color: context.colors.textMuted),
+            hintStyle:
+                context.text.body.copyWith(color: context.colors.textMuted),
             border: InputBorder.none,
           ),
         ),
