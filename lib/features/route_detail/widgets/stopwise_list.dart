@@ -5,14 +5,12 @@ import '../../../core/theme.dart';
 import '../../../data/models/fare_result.dart';
 import '../../../widgets/common.dart';
 
-const _rowHeight = 64.0;
-
-/// Every stop in the direction of travel. The right column is what you pay
-/// from the boarding stop if you get off there; the small line is the fare
-/// for just the previous segment (the web app's "stop-wise fare" table).
+/// The official fare for each hop between neighbouring stops, like the web
+/// app's "Stop-wise Fare" card.
 ///
-/// The two don't add up: the official chart is distance-based with a ৳10
-/// minimum, so a long ride costs less than the sum of its short hops.
+/// The hops don't add up to the trip fare: the chart is distance-based with a
+/// ৳10 minimum, so a long ride costs less than the sum of its short hops. The
+/// note under the list says so, so nobody pays the sum.
 class StopwiseList extends StatelessWidget {
   const StopwiseList({super.key, required this.result});
 
@@ -20,133 +18,70 @@ class StopwiseList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final path = result.path;
-    return AppCard(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      child: Column(
-        children: [
-          for (var i = 0; i < path.length; i++)
-            _StopRow(
-              nameBn: path[i].nameBn,
-              nameEn: path[i].nameEn,
-              isFirst: i == 0,
-              isLast: i == path.length - 1,
-              fareFromStart: i == 0 ? null : result.fareTo(path[i]),
-              segmentFare: i == 0 ? null : result.segments[i - 1].fare,
-            ),
-        ],
-      ),
-    );
-  }
-}
-
-class _StopRow extends StatelessWidget {
-  const _StopRow({
-    required this.nameBn,
-    required this.nameEn,
-    required this.isFirst,
-    required this.isLast,
-    required this.fareFromStart,
-    required this.segmentFare,
-  });
-
-  final String nameBn;
-  final String nameEn;
-  final bool isFirst;
-  final bool isLast;
-  final int? fareFromStart;
-  final int? segmentFare;
-
-  @override
-  Widget build(BuildContext context) {
-    final dotColor = isFirst
-        ? context.colors.green
-        : isLast
-            ? context.colors.red
-            : context.colors.textMuted;
-    final endpoint = isFirst || isLast;
     final l10n = context.l10n;
-
-    return SizedBox(
-      height: _rowHeight,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+    final segments = result.segments;
+    return AppCard(
+      padding: EdgeInsets.zero,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(
-            width: 16,
-            child: Column(
-              children: [
-                Expanded(
-                  child: Container(
-                    width: 2,
-                    color: isFirst ? Colors.transparent : context.colors.rail,
-                  ),
-                ),
-                Container(
-                  width: endpoint ? 14 : 10,
-                  height: endpoint ? 14 : 10,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: endpoint ? context.colors.bg : dotColor,
-                    border: endpoint
-                        ? Border.all(color: dotColor, width: 3.5)
-                        : null,
-                  ),
-                ),
-                Expanded(
-                  child: Container(
-                    width: 2,
-                    color: isLast ? Colors.transparent : context.colors.rail,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(width: 14),
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 12),
+            child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text.rich(
-                  TextSpan(children: [
-                    TextSpan(
-                      text: context.name(nameBn, nameEn),
-                      style: endpoint
-                          ? context.text.bodyStrong
-                          : context.text.body.copyWith(fontWeight: FontWeight.w500),
-                    ),
-                    TextSpan(
-                        text: '  ${context.altName(nameBn, nameEn)}',
-                        style: context.text.caption),
-                  ]),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                Text(
-                  segmentFare == null
-                      ? l10n.getOnHere
-                      : l10n.fromPreviousStop(context.taka(segmentFare!)),
-                  style: context.text.caption,
+                Expanded(child: Text(l10n.stopwiseTitle, style: context.text.bodyStrong)),
+                const SizedBox(width: 12),
+                Flexible(
+                  child: Text(l10n.stopwiseSubtitle,
+                      textAlign: TextAlign.end, style: context.text.caption),
                 ),
               ],
             ),
           ),
-          const SizedBox(width: 12),
-          Center(
-            child: fareFromStart == null
-                ? const SizedBox.shrink()
-                : Text(
-                    context.taka(fareFromStart!),
-                    style: TextStyle(
-                      fontSize: isLast ? 20 : 16,
-                      fontWeight: isLast ? FontWeight.w700 : FontWeight.w600,
-                      color: isLast ? context.colors.amber : context.colors.text,
+          for (final s in segments) ...[
+            Divider(height: 1, color: context.colors.border),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: StopName(
+                      nameBn: s.from.nameBn,
+                      nameEn: s.from.nameEn,
+                      style: context.text.body.copyWith(fontWeight: FontWeight.w600),
                     ),
-                    semanticsLabel:
-                        l10n.fareToHere(context.digits(fareFromStart!)),
                   ),
-          ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: Icon(Icons.arrow_forward, size: 16, color: context.colors.textMuted),
+                  ),
+                  Expanded(
+                    child: StopName(
+                      nameBn: s.to.nameBn,
+                      nameEn: s.to.nameEn,
+                      style: context.text.body.copyWith(fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Text(
+                    context.taka(s.fare),
+                    style: context.text.bodyStrong.copyWith(color: context.colors.amber),
+                  ),
+                ],
+              ),
+            ),
+          ],
+          if (segments.length > 1) ...[
+            Divider(height: 1, color: context.colors.border),
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Text(
+                l10n.segmentsDontAdd(context.taka(result.fare)),
+                style: context.text.caption,
+              ),
+            ),
+          ],
         ],
       ),
     );

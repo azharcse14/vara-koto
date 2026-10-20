@@ -77,24 +77,17 @@
   "noStopFoundHint": "Try a different spelling, or search in Bangla or English. You can also search by route number, like 101.",
 
   "stopwiseTitle": "Stop-by-stop fare",
-  "stopwiseSubtitle": "Official fare to the stop where you get off",
+  "stopwiseSubtitle": "Official fare for each segment",
   "matrixTitle": "Full fare matrix",
   "matrixSubtitle": "Fare between any two stops on this route. Scroll sideways to see more.",
   "matrixCorner": "From ↓  To →",
-  "totalFare": "Total fare",
-  "routeLength": "Full route {km} km",
-  "@routeLength": {
-    "placeholders": {"km": {"type": "String"}}
-  },
-  "getOnHere": "Get on here",
-  "fromPreviousStop": "{fare} from the previous stop",
-  "@fromPreviousStop": {
+  "journey": "Journey",
+  "routeLabel": "Route",
+  "segmentsDontAdd": "For the whole trip you pay {fare}, the total fare above. The segment fares don't add up to it, because the chart's minimum is ৳10.",
+  "@segmentsDontAdd": {
     "placeholders": {"fare": {"type": "String"}}
   },
-  "fareToHere": "Fare to get off here: {n} taka",
-  "@fareToHere": {
-    "placeholders": {"n": {"type": "String"}}
-  },
+  "totalFare": "Total fare",
 
   "feedbackTitle": "Send feedback",
   "feedbackIntro": "Tell us if a fare looks wrong, a stop is missing, or you'd like something new.",

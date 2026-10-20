@@ -171,7 +171,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get stopwiseTitle => 'Stop-by-stop fare';
 
   @override
-  String get stopwiseSubtitle => 'Official fare to the stop where you get off';
+  String get stopwiseSubtitle => 'Official fare for each segment';
 
   @override
   String get matrixTitle => 'Full fare matrix';
@@ -184,25 +184,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get matrixCorner => 'From ↓  To →';
 
   @override
+  String get journey => 'Journey';
+
+  @override
+  String get routeLabel => 'Route';
+
+  @override
+  String segmentsDontAdd(String fare) {
+    return 'For the whole trip you pay $fare, the total fare above. The segment fares don\'t add up to it, because the chart\'s minimum is ৳10.';
+  }
+
+  @override
   String get totalFare => 'Total fare';
-
-  @override
-  String routeLength(String km) {
-    return 'Full route $km km';
-  }
-
-  @override
-  String get getOnHere => 'Get on here';
-
-  @override
-  String fromPreviousStop(String fare) {
-    return '$fare from the previous stop';
-  }
-
-  @override
-  String fareToHere(String n) {
-    return 'Fare to get off here: $n taka';
-  }
 
   @override
   String get feedbackTitle => 'Send feedback';

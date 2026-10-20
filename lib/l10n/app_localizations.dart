@@ -335,7 +335,7 @@ abstract class AppLocalizations {
   /// No description provided for @stopwiseSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Official fare to the stop where you get off'**
+  /// **'Official fare for each segment'**
   String get stopwiseSubtitle;
 
   /// No description provided for @matrixTitle.
@@ -356,35 +356,29 @@ abstract class AppLocalizations {
   /// **'From ↓  To →'**
   String get matrixCorner;
 
+  /// No description provided for @journey.
+  ///
+  /// In en, this message translates to:
+  /// **'Journey'**
+  String get journey;
+
+  /// No description provided for @routeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Route'**
+  String get routeLabel;
+
+  /// No description provided for @segmentsDontAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'For the whole trip you pay {fare}, the total fare above. The segment fares don\'t add up to it, because the chart\'s minimum is ৳10.'**
+  String segmentsDontAdd(String fare);
+
   /// No description provided for @totalFare.
   ///
   /// In en, this message translates to:
   /// **'Total fare'**
   String get totalFare;
-
-  /// No description provided for @routeLength.
-  ///
-  /// In en, this message translates to:
-  /// **'Full route {km} km'**
-  String routeLength(String km);
-
-  /// No description provided for @getOnHere.
-  ///
-  /// In en, this message translates to:
-  /// **'Get on here'**
-  String get getOnHere;
-
-  /// No description provided for @fromPreviousStop.
-  ///
-  /// In en, this message translates to:
-  /// **'{fare} from the previous stop'**
-  String fromPreviousStop(String fare);
-
-  /// No description provided for @fareToHere.
-  ///
-  /// In en, this message translates to:
-  /// **'Fare to get off here: {n} taka'**
-  String fareToHere(String n);
 
   /// No description provided for @feedbackTitle.
   ///

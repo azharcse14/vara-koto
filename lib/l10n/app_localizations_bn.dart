@@ -167,7 +167,7 @@ class AppLocalizationsBn extends AppLocalizations {
   String get stopwiseTitle => 'স্টপওয়ারি ভাড়া';
 
   @override
-  String get stopwiseSubtitle => 'যে স্টপে নামবেন, সেখান পর্যন্ত সরকারি ভাড়া';
+  String get stopwiseSubtitle => 'প্রতি সেগমেন্টের সরকারি ভাড়া';
 
   @override
   String get matrixTitle => 'সম্পূর্ণ ভাড়া ম্যাট্রিক্স';
@@ -180,25 +180,18 @@ class AppLocalizationsBn extends AppLocalizations {
   String get matrixCorner => 'থেকে ↓  পর্যন্ত →';
 
   @override
+  String get journey => 'যাত্রাপথ';
+
+  @override
+  String get routeLabel => 'রুট';
+
+  @override
+  String segmentsDontAdd(String fare) {
+    return 'পুরো যাত্রার ভাড়া $fare, ওপরের মোট ভাড়া। সেগমেন্টের ভাড়াগুলো যোগ করলে এর সমান হয় না, কারণ চার্টে সর্বনিম্ন ভাড়া ৳১০।';
+  }
+
+  @override
   String get totalFare => 'মোট ভাড়া';
-
-  @override
-  String routeLength(String km) {
-    return 'পুরো রুট $km কিমি';
-  }
-
-  @override
-  String get getOnHere => 'এখান থেকে উঠবেন';
-
-  @override
-  String fromPreviousStop(String fare) {
-    return 'আগের স্টপ থেকে $fare';
-  }
-
-  @override
-  String fareToHere(String n) {
-    return 'এখানে নামলে ভাড়া $n টাকা';
-  }
 
   @override
   String get feedbackTitle => 'মতামত জানান';

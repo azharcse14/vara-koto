@@ -47,15 +47,11 @@ class RouteDetailScreen extends StatelessWidget {
         padding: EdgeInsets.fromLTRB(16, 8, 16, 32 + bottomInset),
         children: [
           FareHero(result: result),
+          const SizedBox(height: 16),
+          StopwiseList(result: result),
           const SizedBox(height: 28),
           SectionHeader(title: l10n.busesTitle, subtitle: l10n.busesSubtitle),
           BusList(result: result, buses: buses),
-          const SizedBox(height: 28),
-          SectionHeader(
-            title: l10n.stopwiseTitle,
-            subtitle: l10n.stopwiseSubtitle,
-          ),
-          StopwiseList(result: result),
           const SizedBox(height: 28),
           SectionHeader(
             title: l10n.matrixTitle,
