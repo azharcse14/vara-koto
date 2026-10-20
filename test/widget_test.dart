@@ -18,8 +18,6 @@ void main() {
   late RouteDataset data;
   late List<StopEntry> stops;
 
-  StopEntry stop(String nameEn) => stops.firstWhere((s) => s.nameEn == nameEn);
-
   setUpAll(() {
     data = parseRouteDataset(File('assets/data/routes.json').readAsStringSync());
     stops = buildStopIndex(data.routes);

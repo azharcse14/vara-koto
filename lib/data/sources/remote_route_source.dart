@@ -69,7 +69,7 @@ class RemoteRouteDataSource implements RouteDataSource {
     try {
       final file = await _cacheFile();
       if (file == null || !await file.exists()) return null;
-      return compute(parseRouteDataset, await file.readAsString());
+      return await compute(parseRouteDataset, await file.readAsString());
     } catch (e) {
       debugPrint('Ignoring unreadable route cache: $e');
       return null;
