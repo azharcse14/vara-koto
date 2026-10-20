@@ -73,10 +73,10 @@ The mode is chosen in one place, `lib/app_services.dart`. The screens never know
 
 ## Updating fares
 
-1. Edit `fareData.js`.
-2. Rebuild the asset, using the new chart's date as the version:
+1. Transcribe the new BRTA chart into `tool/data/` (same shape as `brta_chart_2026-09-22.json`) and point `tool/build_from_chart.js` at it. Add any new printed stop names to `tool/data/chart_stop_names.json`.
+2. Rebuild `routes.json` in place:
    ```bash
-   node tool/export_data.js path/to/fareData.js 2026-12-01
+   node tool/build_from_chart.js && node tool/add_buses.js
    ```
 3. Ship the update:
    - **Local mode:** publish an app update.
@@ -98,7 +98,8 @@ assets/
   data/routes.json         124 route entries with fare matrices
   fonts/                   Hind Siliguri, bundled so Bangla renders offline
 tool/
-  export_data.js           fareData.js → routes.json
+  build_from_chart.js      BRTA chart → routes.json
+  add_buses.js             bus operator list (CSV) → routes.json
   find_spelling_variants.js lists stops spelled two ways in the data
 test/                      logic tests against the real data
 ```

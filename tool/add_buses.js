@@ -1,6 +1,6 @@
 // Adds the bus (operator) list from tool/data/bus_routes.csv to assets/data/routes.json.
 //
-// Usage: node tool/add_buses.js   (export_data.js also runs it)
+// Usage: node tool/add_buses.js
 //
 // bus_routes.csv is "Dhaka Local Bus Route" by Mahabub Hasan Mamun on Kaggle
 // (kaggle.com/datasets/mahabub001cs/dhaka-local-bus-route), CDLA-Sharing-1.0.

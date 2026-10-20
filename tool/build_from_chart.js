@@ -1,7 +1,7 @@
 // Replaces routes in assets/data/routes.json with the BRTA chart of 22 Sep 2026
 // (notice 35.00.0000.020.26.005.16-540), transcribed in tool/data/brta_chart_2026-09-22.json.
 //
-// Usage: node tool/build_from_chart.js   (export_data.js also runs it)
+// Usage: node tool/build_from_chart.js   (then node tool/add_buses.js)
 //
 // A route whose number is in the chart takes the chart's stops and printed
 // fares (all variants with that number are replaced by the one chart route),
