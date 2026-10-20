@@ -12,8 +12,6 @@ dependencies:
   http: ^1.2.2              # server mode: route sync + feedback
   path_provider: ^2.1.4     # server mode: caches downloaded routes on the device
   shared_preferences: ^2.3.2 # feedback outbox (kept on device until it can be sent)
-  url_launcher: ^6.3.0      # links on the About screen
-
 dev_dependencies:
   flutter_test:
     sdk: flutter

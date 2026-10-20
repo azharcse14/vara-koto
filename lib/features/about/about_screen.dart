@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../../config/app_config.dart';
 import '../../core/bangla_text.dart';
@@ -12,31 +11,6 @@ class AboutScreen extends StatelessWidget {
 
   final FareRepository fares;
   final DataMode mode;
-
-  static const _links = [
-    (label: 'Facebook', url: 'https://www.facebook.com/abrarjahinzihan/', icon: Icons.facebook),
-    (label: 'Instagram', url: 'https://www.instagram.com/abrarjahinzihan/', icon: Icons.photo_camera_outlined),
-    (label: 'LinkedIn', url: 'https://www.linkedin.com/in/abrar-jahin-zihan-b8b250328', icon: Icons.work_outline),
-    (label: 'GitHub', url: 'https://github.com/abrarjahinzihan', icon: Icons.code),
-    (label: 'X (Twitter)', url: 'https://x.com/ZihanJahinabrar', icon: Icons.alternate_email),
-    (label: 'Lichess', url: 'https://lichess.org/@/AbrarJahinZihan', icon: Icons.grid_view),
-    (label: 'Email', url: 'mailto:abrarjahinkhanzihan@gmail.com', icon: Icons.mail_outline),
-  ];
-
-  Future<void> _open(BuildContext context, String url) async {
-    var opened = false;
-    try {
-      opened = await launchUrl(Uri.parse(url),
-          mode: LaunchMode.externalApplication);
-    } catch (_) {
-      opened = false;
-    }
-    if (!opened && context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('লিংকটি খোলা যায়নি।')),
-      );
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,28 +47,6 @@ class AboutScreen extends StatelessWidget {
                       : 'তথ্য সার্ভার থেকে হালনাগাদ হয়, ইন্টারনেট না থাকলে শেষ সংরক্ষিত তথ্য দেখায়।',
                   style: AppText.label,
                 ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 24),
-          const SectionHeader(
-            title: 'তৈরি করেছেন / Created by',
-            subtitle: 'ABRAR JAHIN ZIHAN',
-          ),
-          AppCard(
-            padding: EdgeInsets.zero,
-            child: Column(
-              children: [
-                for (var i = 0; i < _links.length; i++) ...[
-                  if (i > 0) const Divider(height: 1, indent: 56),
-                  ListTile(
-                    leading: Icon(_links[i].icon, color: AppColors.textSecondary),
-                    title: Text(_links[i].label, style: AppText.body),
-                    trailing: const Icon(Icons.open_in_new,
-                        size: 18, color: AppColors.textMuted),
-                    onTap: () => _open(context, _links[i].url),
-                  ),
-                ],
               ],
             ),
           ),
