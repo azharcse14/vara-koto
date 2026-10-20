@@ -31,6 +31,10 @@ class AboutScreen extends StatelessWidget {
                 const SizedBox(height: 6),
                 Text(l10n.fareNotice, style: context.text.label),
                 const Divider(height: 28),
+                Text(l10n.busSource, style: context.text.bodyStrong),
+                const SizedBox(height: 6),
+                Text(l10n.busSourceBody, style: context.text.body),
+                const Divider(height: 28),
                 Text(
                   l10n.dataVersion(context.digits(fares.dataVersion)),
                   style: context.text.label,

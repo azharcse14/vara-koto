@@ -7,11 +7,13 @@
 import 'dart:io';
 
 import 'package:dhaka_bus_vara/core/bangla_text.dart';
+import 'package:dhaka_bus_vara/data/fare_repository.dart';
 import 'package:dhaka_bus_vara/data/models/bus_route.dart';
 import 'package:dhaka_bus_vara/data/models/stop_entry.dart';
 import 'package:dhaka_bus_vara/domain/fare_finder.dart';
 import 'package:dhaka_bus_vara/domain/stop_index.dart';
 import 'package:dhaka_bus_vara/domain/stop_search.dart';
+import 'package:dhaka_bus_vara/data/sources/route_data_source.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -158,4 +160,46 @@ void main() {
       expect(taka(10, bn: false), '৳10');
     });
   });
+
+  group('buses', () {
+    Bus bus(String name) => data.buses.firstWhere((b) => b.name == name);
+
+    test('loads the unofficial bus list', () {
+      expect(data.buses.length, 196);
+    });
+
+    test('matches stops by alias and by the spelling map', () {
+      expect(bus('Achim Paribahan').serves('Kalshi', 'Mirpur-10'), isTrue);
+      // CSV says "Jashimuddin (Uttara)", mapped in tool/add_buses.js.
+      expect(bus('Azmeri Glory Limited').serves('Jashimuddin', 'Banani'), isTrue);
+      expect(bus('Achim Paribahan').serves('Kalshi', 'Sadarghat'), isFalse);
+      // CSV ends D Link at "Fulbaria"; SAME_PLACE joins it to Gulistan.
+      expect(bus('D Link').serves('Dhamrai', 'Gulistan'), isTrue);
+    });
+
+    test('lists only buses that follow the fare route\'s road', () async {
+      final repo = FareRepository(_Fixed(data));
+      await repo.init();
+      List<String> buses(String from, String to) => repo.busesFor(
+          findFares(data.routes, from, to).first);
+
+      // A356 goes via Mirpur-1; Safety Druti goes via Kazipara.
+      expect(buses('Mirpur-12', 'New Market'), isNot(contains('Safety Druti')));
+      expect(buses('Mirpur-12', 'Agargaon'), contains('Safety Druti'));
+      // A397 goes via Farmgate; D Link goes via New Market.
+      expect(buses('Dhamrai', 'Gulistan'), isNot(contains('D Link')));
+    });
+  });
+}
+
+class _Fixed implements RouteDataSource {
+  _Fixed(this.data);
+
+  final RouteDataset data;
+
+  @override
+  Future<RouteDataset> load() async => data;
+
+  @override
+  Future<RouteDataset?> refresh(String currentVersion) async => null;
 }

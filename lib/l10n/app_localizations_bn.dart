@@ -265,4 +265,27 @@ class AppLocalizationsBn extends AppLocalizations {
   @override
   String get dataRemote =>
       'তথ্য সার্ভার থেকে হালনাগাদ হয়, ইন্টারনেট না থাকলে শেষ সংরক্ষিত তথ্য দেখায়।';
+
+  @override
+  String get busesTitle => 'এই পথে চলে যে বাসগুলো';
+
+  @override
+  String get busesSubtitle =>
+      'বিআরটিএর তালিকা নয়। বিভিন্ন উৎস থেকে নেওয়া, তাই পুরোনো হতে পারে।';
+
+  @override
+  String busesNote(String from, String to, String route) {
+    return 'আমাদের তালিকা অনুযায়ী এই বাসগুলো রুট $route-এর পথ ধরেই $from থেকে $to যায়, তাই ওপরের ভাড়াই প্রযোজ্য হওয়ার কথা। তালিকাটি অনানুষ্ঠানিক, তাই ওঠার আগে কন্ডাক্টরকে জিজ্ঞেস করে নিন।';
+  }
+
+  @override
+  String get busesNone =>
+      'এই পথে কোন কোন বাস চলে, তা এখনো আমাদের জানা নেই। বাস স্টপে জেনে নিন।';
+
+  @override
+  String get busSource => 'বাসের নাম';
+
+  @override
+  String get busSourceBody =>
+      'অনানুষ্ঠানিক তালিকা, বিআরটিএর নয়। মাহবুব হাসান মামুনের “Dhaka Local Bus Route” ডেটাসেট (Kaggle), CDLA-Sharing 1.0। বাস ও স্টপ বদলে থাকতে পারে।';
 }

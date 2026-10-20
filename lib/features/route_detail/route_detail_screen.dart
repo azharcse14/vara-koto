@@ -4,14 +4,20 @@ import '../../core/l10n.dart';
 import '../../core/theme.dart';
 import '../../data/models/fare_result.dart';
 import '../../widgets/common.dart';
+import 'widgets/bus_list.dart';
 import 'widgets/fare_hero.dart';
 import 'widgets/fare_matrix_table.dart';
 import 'widgets/stopwise_list.dart';
 
 class RouteDetailScreen extends StatelessWidget {
-  const RouteDetailScreen({super.key, required this.result});
+  const RouteDetailScreen({
+    super.key,
+    required this.result,
+    required this.buses,
+  });
 
   final FareResult result;
+  final List<String> buses;
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +47,9 @@ class RouteDetailScreen extends StatelessWidget {
         padding: EdgeInsets.fromLTRB(16, 8, 16, 32 + bottomInset),
         children: [
           FareHero(result: result),
+          const SizedBox(height: 28),
+          SectionHeader(title: l10n.busesTitle, subtitle: l10n.busesSubtitle),
+          BusList(result: result, buses: buses),
           const SizedBox(height: 28),
           SectionHeader(
             title: l10n.stopwiseTitle,

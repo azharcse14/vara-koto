@@ -118,5 +118,15 @@
     "placeholders": {"version": {"type": "String"}}
   },
   "dataLocal": "All data is inside the app, so it works without internet.",
-  "dataRemote": "Data updates from the server. Without internet, the last saved data is shown."
+  "dataRemote": "Data updates from the server. Without internet, the last saved data is shown.",
+
+  "busesTitle": "Buses on this road",
+  "busesSubtitle": "Not from BRTA. Collected from public sources, so it may be out of date.",
+  "busesNote": "Our list shows these buses running from {from} to {to} along route {route}'s road, so the fare above should apply. The list is unofficial, so ask the conductor before you get on.",
+  "@busesNote": {
+    "placeholders": {"from": {"type": "String"}, "to": {"type": "String"}, "route": {"type": "String"}}
+  },
+  "busesNone": "We don't know which buses run this road yet. Please check at the bus stop.",
+  "busSource": "Bus names",
+  "busSourceBody": "Unofficial list, not from BRTA. From the “Dhaka Local Bus Route” dataset by Mahabub Hasan Mamun (Kaggle), CDLA-Sharing 1.0. Buses and stops may have changed."
 }

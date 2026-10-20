@@ -66,7 +66,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _openDetail(FareResult result) {
     Navigator.of(context).push(
-      MaterialPageRoute<void>(builder: (_) => RouteDetailScreen(result: result)),
+      MaterialPageRoute<void>(
+        builder: (_) => RouteDetailScreen(
+          result: result,
+          buses: _fares.busesFor(result),
+        ),
+      ),
     );
   }
 

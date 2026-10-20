@@ -270,4 +270,27 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get dataRemote =>
       'Data updates from the server. Without internet, the last saved data is shown.';
+
+  @override
+  String get busesTitle => 'Buses on this road';
+
+  @override
+  String get busesSubtitle =>
+      'Not from BRTA. Collected from public sources, so it may be out of date.';
+
+  @override
+  String busesNote(String from, String to, String route) {
+    return 'Our list shows these buses running from $from to $to along route $route\'s road, so the fare above should apply. The list is unofficial, so ask the conductor before you get on.';
+  }
+
+  @override
+  String get busesNone =>
+      'We don\'t know which buses run this road yet. Please check at the bus stop.';
+
+  @override
+  String get busSource => 'Bus names';
+
+  @override
+  String get busSourceBody =>
+      'Unofficial list, not from BRTA. From the “Dhaka Local Bus Route” dataset by Mahabub Hasan Mamun (Kaggle), CDLA-Sharing 1.0. Buses and stops may have changed.';
 }

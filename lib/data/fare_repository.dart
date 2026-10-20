@@ -19,6 +19,7 @@ class FareRepository extends ChangeNotifier {
 
   RouteDataset? _dataset;
   List<StopEntry> _stops = const [];
+  Set<String> _busStops = const {};
   int _routeCount = 0;
   int _minFare = 0;
   Object? _loadError;
@@ -66,9 +67,31 @@ class FareRepository extends ChangeNotifier {
   List<FareResult> findFares(StopEntry from, StopEntry to) =>
       finder.findFares(_dataset?.routes ?? const [], from.nameEn, to.nameEn);
 
+  /// Names of buses that run along [result]'s road, in the data's order.
+  ///
+  /// A bus must stop at both ends and at three quarters of the stops in
+  /// between that the bus list knows (it leaves some out). One that skips
+  /// more takes another road, e.g. Safety Druti goes from Mirpur-12 to New
+  /// Market via Kazipara, not via Mirpur-1 like route A356, so this fare
+  /// wouldn't be its fare.
+  List<String> busesFor(FareResult result) {
+    final known = [
+      for (final stop in result.path)
+        if (_busStops.contains(stop.nameEn)) stop.nameEn,
+    ];
+    return {
+      for (final bus in _dataset?.buses ?? const <Bus>[])
+        if (bus.serves(result.from.nameEn, result.to.nameEn) &&
+            known.where((s) => !bus.stops.contains(s)).length * 4 <=
+                known.length)
+          bus.name,
+    }.toList(growable: false);
+  }
+
   void _apply(RouteDataset data) {
     _dataset = data;
     _stops = buildStopIndex(data.routes);
+    _busStops = {for (final bus in data.buses) ...bus.stops};
     _routeCount = data.routes.map((r) => r.id).toSet().length;
 
     var min = 0;

@@ -99,24 +99,47 @@ class BusRoute {
       );
 }
 
+/// A bus company and the stops it serves, from tool/data/bus_routes.csv.
+/// Unofficial and not tied to a BRTA route number (see tool/add_buses.js).
+class Bus {
+  Bus({required this.name, required this.stops});
+
+  final String name;
+
+  /// English stop names, in every spelling routes.json uses for them.
+  final Set<String> stops;
+
+  bool serves(String a, String b) => stops.contains(a) && stops.contains(b);
+
+  factory Bus.fromJson(Map<String, dynamic> json) => Bus(
+        name: json['name'] as String,
+        stops: Set<String>.from(json['stops'] as List),
+      );
+}
+
 /// Everything in assets/data/routes.json (and, later, GET /api/routes).
 class RouteDataset {
   const RouteDataset({
     required this.version,
     required this.source,
     required this.routes,
+    this.buses = const [],
   });
 
   /// ISO date of the fare chart, e.g. "2026-09-22". Newer data sorts higher.
   final String version;
   final String source;
   final List<BusRoute> routes;
+  final List<Bus> buses;
 
   factory RouteDataset.fromJson(Map<String, dynamic> json) => RouteDataset(
         version: json['version'] as String? ?? '0',
         source: json['source'] as String? ?? '',
         routes: (json['routes'] as List)
             .map((r) => BusRoute.fromJson(r as Map<String, dynamic>))
+            .toList(growable: false),
+        buses: (json['buses'] as List? ?? const [])
+            .map((b) => Bus.fromJson(b as Map<String, dynamic>))
             .toList(growable: false),
       );
 }
